@@ -7,8 +7,8 @@
 
 ## <u>Teamate</u> Project Background
 - ### 필요성
-  - OOO
-  - OOO
+  - AI
+  - Game
 - ### 기존 해결책의 문제점
   - OOO
   - OOO
