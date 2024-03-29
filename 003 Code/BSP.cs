@@ -14,12 +14,12 @@ public class BSP : MonoBehaviour
     [SerializeField] GameObject middle_ground;
     [SerializeField] GameObject bottom_ground;
     
-    
+    public GameObject count_text;
+
     [SerializeField] private int maximumDepth; //트리의 높이, 높을 수록 방을 더 자세히 나누게 됨
     int count = 0;
     void Start()
-    {
-        
+    { 
         Node root = new Node(new RectInt(0, 0, mapSize.x, mapSize.y)); //전체 맵 크기의 루트노드를 만듬
         DrawMap(0,0);
         Divide(root, 0,0);
@@ -41,15 +41,14 @@ public class BSP : MonoBehaviour
     {
         if (n == maximumDepth) // 마지막으로 나누는 node를 기준으로 랜덤한 변수를 설정하기 위해
         {
+            tree.count = count++;
+            GameObject count_txt = Instantiate(count_text); // 생성 순서를 알기위해서 텍스트할당
+            count_txt.transform.position = new Vector2(tree.nodeRect.x+ (tree.nodeRect.width/2)-(mapSize.x/2), tree.nodeRect.y+(tree.nodeRect.height/2)-(mapSize.y/2));
+            count_txt.GetComponent<Count_Text>().count = count;
             if(check == 1) // 지형지물이 가로일때만 사용하기위해
             {
-                tree.count = count++;
                 tree.floor_type = Node.Floor_type.Empty;
-                Instantiate(middle_ground,new Vector2(tree.nodeRect.x+ (tree.nodeRect.width/2)-(mapSize.x/2), tree.nodeRect.y+(tree.nodeRect.height/2)-(mapSize.y/2)),Quaternion.identity);
-                // 활용할 floor의 노드를 구분하기위해서 생성한 dummy값
-                Debug.Log(tree.nodeRect.x+ (tree.nodeRect.width/2) -(mapSize.x/2));
-                Debug.Log(tree.nodeRect.y+(tree.nodeRect.height/2)-(mapSize.y/2));
-                Debug.Log(tree.count);
+                Instantiate(middle_ground,new Vector2(tree.nodeRect.x+ (tree.nodeRect.width/2)-(mapSize.x/2), tree.nodeRect.y+(tree.nodeRect.height/2)-(mapSize.y/2)),Quaternion.identity);   
                 return;
             }
             else return;
