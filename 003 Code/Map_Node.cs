@@ -14,7 +14,7 @@ public class Map_Node
         Treasure
     }
     public Map_Node Up_node;
-    public Map_Node left_node;
+    public Map_Node Left_node;
     public Map_Node Right_node;
     public Map_Node Down_node;
     public int way;
