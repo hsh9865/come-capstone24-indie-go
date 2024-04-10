@@ -6,12 +6,12 @@ public class Map_Node
 {
     public enum Map_type
     {
-        Empty,
+        Empty=0,
+        Enemy=1,
+        Enviroment=2,
+        Treasure=3,
         Enterance,
-        Enemy,
-        Enviroment,
-        Exit,
-        Treasure
+        Exit
     }
     public Map_Node Up_node;
     public Map_Node Left_node;

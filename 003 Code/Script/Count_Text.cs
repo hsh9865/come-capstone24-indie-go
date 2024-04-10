@@ -9,7 +9,8 @@ public class Count_Text : MonoBehaviour
     TextMeshPro text;
     public int count;
     public Vector2 vec;
-
+    public int beside_node;
+    public string type;
     void Start()
     {
         text = GetComponent<TextMeshPro>();

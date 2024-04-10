@@ -1,25 +1,40 @@
 using UnityEngine;
 using System;
 using Unity.VisualScripting;
+using UnityEditor;
 
 public class Map_generate : MonoBehaviour
 {
+    public static Map_generate instance;
     public const int max = 4;
-    private Map_Node[,] map_list = new Map_Node[max, max];
+    public Map_Node[,] map_list = new Map_Node[max, max];
     public GameObject ct;
+    public GameObject nt;
     int way,
         next_num;
+    void Awake()
+    {
+        if (null == instance)
+        {
+            instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+    }
     void Start()
     {
-        for(int i =0;i<max;i++)
+        for (int i = 0; i < max; i++)
         {
-            for(int j = 0 ;j<max;j++)
+            for (int j = 0; j < max; j++)
             {
-                map_list[i,j] = new Map_Node(new RectInt(j*10,-i*10,10,10));
+                map_list[i, j] = new Map_Node(new RectInt(j * 10, -i * 10, 10, 10));
             }
         }
         map_generate();
-        
+
     }
     void map_generate()
     {
@@ -92,14 +107,14 @@ public class Map_generate : MonoBehaviour
                         }
                     }
                     test = find(i);
-                    if(num+count <max)
+                    if (num + count < max)
                     {
-                        if(test) way =UnityEngine.Random.Range(0,2);
-                        else way = UnityEngine.Random.Range(1,3);
-                        if(map_list[i,num+count-1].way!=0)
+                        if (test) way = UnityEngine.Random.Range(0, 2);
+                        else way = UnityEngine.Random.Range(1, 3);
+                        if (map_list[i, num + count - 1].way != 0)
                         {
-                            if(way==2) next_num = num +count;
-                            map_list[i,num+count].way = way;
+                            if (way == 2) next_num = num + count;
+                            map_list[i, num + count].way = way;
                         }
                     }
 
@@ -109,7 +124,8 @@ public class Map_generate : MonoBehaviour
             num = next_num;
         }
         SetNode();
-        print();    
+        Set_Type();
+        print();
     }
 
     bool find(int i)
@@ -122,37 +138,72 @@ public class Map_generate : MonoBehaviour
     }
     void SetNode() // node를 할당해서 추후 맵생성에 있어서 원할하게할 목적
     {
-        for(int i =0;i <max;i++)
+        for (int i = 0; i < max; i++)
         {
-            if(map_list[0,i].way == 9) map_list[0,i].map_type = Map_Node.Map_type.Enterance;
-            if(map_list[3,i].way == 2) map_list[3,i].map_type = Map_Node.Map_type.Exit;
-            for(int j = 1; j < max -1;j++)
+            if (map_list[i, 3].way == 3)
             {
-                if(map_list[i,j].way != 0)
+                map_list[i - 1, 3].Down_node = map_list[i, 3];
+                map_list[i, 3].Up_node = map_list[i - 1, 3];
+            }
+            for (int j = 1; j < max - 1; j++)
+            {
+                if (map_list[i, j].way != 0)
                 {
-                    if(map_list[i,j].way == 3) 
+                    if (map_list[i, j].way == 3)
                     {
-                        map_list[i-1,j].Down_node = map_list[i,j];
-                        map_list[i,j].Up_node = map_list[i-1,j];
+                        map_list[i - 1, j].Down_node = map_list[i, j];
+                        map_list[i, j].Up_node = map_list[i - 1, j];
                     }
-                    if(map_list[i,j-1].way != 0) map_list[i,j].Left_node = map_list[i,j-1];
-                    if(map_list[i,j+1].way != 0) map_list[i,j].Right_node = map_list[i,j+1];
-
+                    if (map_list[i, j - 1].way != 0)
+                    {
+                        map_list[i, j].Left_node = map_list[i, j - 1];
+                        map_list[i, j - 1].Right_node = map_list[i, j];
+                    }
+                    if (map_list[i, j + 1].way != 0)
+                    {
+                        map_list[i, j].Right_node = map_list[i, j + 1];
+                        map_list[i, j + 1].Left_node = map_list[i, j];
+                    }
                 }
             }
         }
     }
-    void print() // 문자열을 출력해서 debug를 위한 목적
+    void Set_Type()
     {
-        for(int i =0;i<max;i++)
+        for (int i = 0; i < 4; i++)
         {
-            for(int j = 0;j < max;j++)
+            for (int j = 0; j < 4; j++)
             {
-                GameObject count_txt = Instantiate(ct); // 생성 순서를 알기위해서 텍스트할당
-                count_txt.transform.position = new Vector2(map_list[i,j].nodeRect.x +5, map_list[i,j].nodeRect.y-5);
-                count_txt.GetComponent<Count_Text>().count = map_list[i,j].way;
+                int rand = UnityEngine.Random.Range(0, 4);
+                if (map_list[0, j].way == 9) map_list[0, j].map_type = Map_Node.Map_type.Enterance;
+                else if (map_list[3, j].way == 2){
+                    map_list[3, j].map_type = Map_Node.Map_type.Exit;
+                    map_list[3,j].way = 9;
+                }
+                else
+                {
+                    map_list[i, j].map_type = (Map_Node.Map_type)rand;
+                }
+
             }
         }
-        
+        Tile_Map_Create.instance.generate_tile();
+    }
+    void print() // 문자열을 출력해서 debug를 위한 목적
+    {
+        for (int i = 0; i < max; i++)
+        {
+            for (int j = 0; j < max; j++)
+            {
+                GameObject count_txt = Instantiate(ct); // 생성 순서를 알기위해서 텍스트할당
+                // GameObject node_txt = Instantiate(nt);
+                count_txt.transform.position = new Vector2(map_list[i, j].nodeRect.x + 5, map_list[i, j].nodeRect.y - 5);
+                count_txt.GetComponent<Count_Text>().count = map_list[i, j].way;
+                // node_txt.transform.position = new Vector2(map_list[i, j].nodeRect.x + 5, map_list[i, j].nodeRect.y - 6);
+                // node_txt.GetComponent<Count_Text>().type = map_list[i, j].map_type.ToString();
+                // Debug.Log($"{i},{j} {map_list[i,j].map_type}");
+            }
+        }
+
     }
 }
