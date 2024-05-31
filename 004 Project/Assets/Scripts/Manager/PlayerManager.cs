@@ -21,7 +21,6 @@ public class PlayerManager : MonoBehaviour
 
 
         Camera.main.gameObject.GetComponent<MainCameraController>().SetPlayer(player);
-        // 플레이어 초기화 로직
     }
 
     private void SetSkills()
@@ -34,5 +33,4 @@ public class PlayerManager : MonoBehaviour
         return skillSetup.GetCurrentSkill();
     }
 
-    // 기타 플레이어 관련 관리 로직
 }
