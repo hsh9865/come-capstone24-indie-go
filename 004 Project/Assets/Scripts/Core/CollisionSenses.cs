@@ -51,15 +51,15 @@ public class CollisionSenses : CoreComponent
     {
         base.Awake();
         groundCheck = transform.Find(GameObjectName.GroundCheck);
-        if (groundCheck == null)
-            Debug.Log(transform.root.name + "에 GroundCheck 없음.");
+      //  if (groundCheck == null)
+            //Debug.Log(transform.root.name + "에 GroundCheck 없음.");
 
         wallCheck = transform.Find(GameObjectName.WallCheck);
-        if (wallCheck == null)
-            Debug.Log(transform.root.name + "에 WallCheck 없음.");
+        //if (wallCheck == null)
+            //Debug.Log(transform.root.name + "에 WallCheck 없음.");
         
         ledgeCheckVertical = transform.Find(GameObjectName.LedgeCheck);
-        if (ledgeCheckVertical == null)
-            Debug.Log(transform.root.name + "에 LedgeCheck 없음.");
+       // if (ledgeCheckVertical == null)
+            //Debug.Log(transform.root.name + "에 LedgeCheck 없음.");
     }
 }

@@ -1,0 +1,31 @@
+{
+  "skills": [
+    {
+      "key": "SpearSkill",
+      "value": {
+        "damageData": { "Damage": 50 },
+        "cooldownData": { "Cooldown": 5 },
+        "movementData": {
+          "Direction": {
+            "x": 1,
+            "y": 0
+          },
+          "Velocity": 10
+        },
+        "spearData": { "ThrowDistance": 15 },
+        "explosionData": null
+      }
+    },
+    {
+      "key": "ExplosionSkill",
+      "value": {
+        "damageData": { "Damage": 100 },
+        "cooldownData": { "Cooldown": 10 },
+        "movementData": null,
+        "spearData": null,
+        "explosionData": { "ExplosionDistance": 5 }
+      }
+    }
+  ]
+}
+

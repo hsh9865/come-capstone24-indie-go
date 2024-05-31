@@ -15,8 +15,9 @@ public class PlayerGroundedState : PlayerState
 
     private bool jumpInput;
     private bool dashInput;
-    private bool isGrounded;
     private bool shieldInput;
+    private bool skillInput;
+    private bool isGrounded;
 
     public PlayerGroundedState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string AnimBoolName) : base(player, stateMachine, playerData, AnimBoolName)
     {
@@ -71,6 +72,10 @@ public class PlayerGroundedState : PlayerState
         else if(shieldInput)// & player.ShieldState.CanShield())
         {
             stateMachine.ChangeState(player.ShieldState);
+        }
+        else if(skillInput && player.SkillState.CanSkill())
+        {
+            stateMachine.ChangeState(player.SkillState);
         }
         else if(!isGrounded)
         {

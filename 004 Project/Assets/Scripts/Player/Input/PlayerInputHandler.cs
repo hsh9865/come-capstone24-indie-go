@@ -15,12 +15,16 @@ public class PlayerInputHandler : MonoBehaviour
     public bool DashInput { get; private set; }
     public bool ShieldInput { get; private set; }
     public bool ShieldHoldInput { get; private set; }
+    public bool SkillInput { get; private set; }
     [SerializeField]
     private float inputHoldTime = 0.2f;
 
     private float jumpInputStartTime;
     private float DashInputStartTime;
     private float ShieldHoldInputStartTime;
+
+    public event Action OnSkillChangeInputAction;
+
 
     private void Start()
     {
@@ -114,6 +118,23 @@ public class PlayerInputHandler : MonoBehaviour
         if (ShieldInput && Time.time >= ShieldHoldInputStartTime + inputHoldTime)
         {
             ShieldHoldInput = true;
+        }
+    }
+
+    private void OnSkillInput(InputAction.CallbackContext context)
+    {
+        if(context.started)
+        {
+            SkillInput = true;
+            Debug.Log("스킬 키 입력");
+        }
+    }
+
+    private void OnSkillChangeInput(InputAction.CallbackContext context)
+    {
+        if(context.started)
+        {
+            OnSkillChangeInputAction?.Invoke();
         }
     }
 }

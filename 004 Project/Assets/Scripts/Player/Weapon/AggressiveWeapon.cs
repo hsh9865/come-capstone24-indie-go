@@ -28,7 +28,7 @@ public class AggressiveWeapon : Weapon
         weaponAnimationToWeapon.OnStopMovement += AnimationStopMovementTrigger;
         weaponAnimationToWeapon.OnTurnOnFlip += AnimationTurnOnFlipTrigger;
         weaponAnimationToWeapon.OnTurnOffFlip += AnimationTurnOffFlipTrigger;
-    }
+    }//+=했으면 -=도 해줘야함.
 
     public override void EnterWeapon()
     {

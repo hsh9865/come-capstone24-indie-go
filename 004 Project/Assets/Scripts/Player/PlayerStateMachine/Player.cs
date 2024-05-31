@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
     public PlayerAttackState SecondaryAttackState { get; private set; }
     public PlayerDashState DashState { get; private set; }
     public PlayerShieldState ShieldState { get; private set; }
+    public PlayerSkillState SkillState { get; private set; }
 
     [SerializeField]
     private PlayerData playerData;
@@ -41,9 +42,11 @@ public class Player : MonoBehaviour
     //test
     #endregion
 
+    public Skill skill { get; private set; }
 
     private Weapon primaryWeapon;
     private Weapon shieldWeapon;
+    
     private Vector2 workspace;
 
     private void Awake()
@@ -53,7 +56,7 @@ public class Player : MonoBehaviour
         //GameObject.Find말고 자식으로 서치하는것을 찾기.
         primaryWeapon = GameObject.Find("Sword").GetComponent<Weapon>();
         shieldWeapon = GameObject.Find("Shield").GetComponent<Weapon>();
-
+        skill = GameObject.Find("Skill1").GetComponent<Skill>();
 
 
         playerData = new PlayerData();
@@ -68,6 +71,7 @@ public class Player : MonoBehaviour
      //   SecondaryAttackState = new PlayerAttackState(this, StateMachine, playerData, PlayerAnimStatesName.Attack);
         DashState = new PlayerDashState(this, StateMachine, playerData, PlayerAnimStatesName.Dash);
         ShieldState = new PlayerShieldState(this, StateMachine, playerData, PlayerAnimStatesName.Action, shieldWeapon);
+        SkillState = new PlayerSkillState(this, StateMachine, playerData, PlayerAnimStatesName.Action, skill);
 
         primaryWeapon.InitializeAttackWeapon(PrimaryAttackState);
         shieldWeapon.InitializeShieldWeapon(ShieldState);

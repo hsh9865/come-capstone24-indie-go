@@ -4,31 +4,20 @@ using UnityEngine;
 
 public class MainCameraController : MonoBehaviour
 {
-    [SerializeField] private Player player;
-    public Player Player
-    {
-        get
-        {
-            if (player == null)
-                player = FindObjectOfType<Player>();
-            return player;
-        }
-    }
+    [SerializeField] private GameObject player;
+
     public Vector3 _offset = new Vector3(0, 1f, -10f);
     public float smooth = 5f;
     Vector3 target;
-    void Awake()
-    {
-    }
 
-    void Update()
-    {
-
-    }
+    public void SetPlayer(GameObject player) { this.player = player; }
 
     private void LateUpdate()
     {
-        target = Player.transform.position + _offset;
-        transform.position = Vector3.Lerp(transform.position, target, Time.deltaTime * smooth);
+        if (player != null)
+        {
+            target = player.transform.position + _offset;
+            transform.position = Vector3.Lerp(transform.position, target, Time.deltaTime * smooth);
+        }
     }
 }
