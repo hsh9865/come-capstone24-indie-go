@@ -30,6 +30,19 @@ public class ResourceManager
         return go;
     }
 
+    public GameObject Instantiate(GameObject prefab, Vector3 position,Quaternion rotation, Transform parent = null)
+    {
+        GameObject original = prefab;
+        if (original == null)
+        {
+            Debug.Log($"Failed to load prefab");
+            return null;
+        }
+        GameObject go = Object.Instantiate(original, position, rotation, parent);
+        go.name = original.name;
+        return go;
+    }
+
     public void Destroy(GameObject go)
     {
         if (go == null)

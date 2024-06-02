@@ -15,6 +15,8 @@ public class SkillData
 public class SkillDamageData : SkillData
 {
     public float Damage;
+    public Vector2 knockbackAngle = Vector2.one;
+    public float knockbackStrength = 10f;
 }
 
 public class SkillCooldownData : SkillData
@@ -30,6 +32,7 @@ public class SkillMovementData : SkillData
 
 public class SkillSpearData : SkillData
 {
+    public float ThrowSpeed;
     public float ThrowDistance;
 }
 

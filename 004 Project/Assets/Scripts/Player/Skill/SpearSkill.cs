@@ -2,24 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpearSkill : ISkillAction
+public class SpearSkill : ConcreteSkill
 {
-    private Skill skill;
-
-    public void Initialize(Skill skill)
+    public override void Enter()
     {
-        this.skill = skill;
-    }
-
-    public void Enter()
-    {
+        base.Enter();
         // 구체적인 스킬 로직을 구현한다
-        Debug.Log("spear 진입");
+        
+        
+        //skill.EventHandler.OnSkillAction
     }
 
-    public void Exit()
+    public override void Exit()
     {
+        base.Exit();
         // 구체적인 스킬 로직을 구현한다
-        Debug.Log("spear 종료");
     }
+
 }
+

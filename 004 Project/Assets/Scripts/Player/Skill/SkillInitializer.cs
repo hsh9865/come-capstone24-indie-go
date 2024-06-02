@@ -1,20 +1,30 @@
+using UnityEngine;
 public abstract class SkillInitializer
 {
     protected Skill skill;
     protected SkillGenerator generator;
     protected string skillName;
-
-    public SkillInitializer(Skill skill, SkillGenerator generator, string skillName)
+    protected GameObject prefab;
+    protected Transform prefabParent;
+    protected Transform playerTransform;
+    protected Vector2 prefabOffset;
+    public SkillInitializer(Skill skill, SkillGenerator generator, string skillName, GameObject prefab = null, Transform prefabParent = null, Transform playerTransform = null, Vector2 prefabOffset = default(Vector2))
     {
         this.skill = skill;
         this.generator = generator;
         this.skillName = skillName;
+        this.prefab = prefab;
+        this.prefabParent = prefabParent;
+        this.playerTransform = playerTransform;
+        this.prefabOffset = prefabOffset;
+       // Debug.Log("여기는어떤가?" + prefab.name);
     }
 
     public void Initialize(SkillDataEx data)
     {
         // 스킬 데이터를 설정
-        generator.InitializeSkill(skill, data);
+      //  Debug.Log($"prefab이 비었나? : {prefab.name}");
+        generator.InitializeSkill(skill, data, prefab);
         
         // 구체화된 스킬을 등록하고 이벤트 할당
         RegisterEvents();
@@ -28,13 +38,13 @@ public class SkillInitializer<TSkill, TGenerator> : SkillInitializer
     where TSkill : ISkillAction, new()
     where TGenerator : SkillGenerator
 {
-    public SkillInitializer(Skill skill, TGenerator generator, string skillName)
-        : base(skill, generator, skillName) { }
+    public SkillInitializer(Skill skill, TGenerator generator, string skillName, GameObject prefab = null, Transform prefabParent = null, Transform playerTransform = null, Vector2 prefabOffset = default(Vector2))
+        : base(skill, generator, skillName, prefab, prefabParent, playerTransform, prefabOffset) {}
 
     public override void RegisterEvents()
     {
         TSkill concreteSkill = new TSkill();
-        concreteSkill.Initialize(skill);
+        concreteSkill.Initialize(skill, prefab, prefabParent, playerTransform, prefabOffset);
         skill.OnEnter += concreteSkill.Enter;
         skill.OnExit += concreteSkill.Exit;
     }

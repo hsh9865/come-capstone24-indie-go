@@ -11,6 +11,7 @@ public class PlayerSkillState : PlayerAbilityState
     {
         this.skill = skill;
         skill.OnExit += ExitHandler;
+        skill.OnHold += HoldHandler;
     }
 
     public override void Enter()
@@ -24,7 +25,15 @@ public class PlayerSkillState : PlayerAbilityState
         base.Exit();
     }
 
-
+    private void HoldHandler()
+    {
+        if (player.InputHandler.SkillHoldInput)
+        {
+            skill.hold = true;
+        }
+        else
+            skill.hold = false;
+    }
     private void ExitHandler()
     {
         AnimationFinishTrigger();

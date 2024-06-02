@@ -10,7 +10,6 @@ public abstract class SkillGenerator
     {
         skill.SetData(data);
 
-
         // 필요한 경우 CollisionHandler를 동적으로 할당.
         if (collisionTarget != null)
         {

@@ -57,7 +57,7 @@ public class Player : MonoBehaviour
         primaryWeapon = GameObject.Find("Sword").GetComponent<Weapon>();
         shieldWeapon = GameObject.Find("Shield").GetComponent<Weapon>();
         skill = GameObject.Find("Skill1").GetComponent<Skill>();
-
+        skill.SetCore(Core);
 
         playerData = new PlayerData();
         StateMachine = new PlayerStateMachine();

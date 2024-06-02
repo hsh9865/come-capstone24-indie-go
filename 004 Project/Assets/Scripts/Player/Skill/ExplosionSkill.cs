@@ -6,7 +6,7 @@ public class ExplosionSkill : ISkillAction
 {
     private Skill skill;
 
-    public void Initialize(Skill skill)
+    public void Initialize(Skill skill, GameObject prefab = null, Transform prefabParent = null, Transform playerTransform = null, Vector2 prefabOffset = default(Vector2))
     {
         this.skill = skill;
     }

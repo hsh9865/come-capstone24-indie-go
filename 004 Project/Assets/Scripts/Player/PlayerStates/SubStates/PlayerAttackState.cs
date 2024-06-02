@@ -7,7 +7,6 @@ public class PlayerAttackState : PlayerAbilityState
     private Weapon weapon;
 
     private int xInput;
-
     private float velocityToSet;
 
     private bool setVelocity;
@@ -43,8 +42,7 @@ public class PlayerAttackState : PlayerAbilityState
         if (!isExitingState)
         {
             shieldInput = player.InputHandler.ShieldInput;
-            xInput = player.InputHandler.NormInputX;  //주석해야하는가
-
+            xInput = player.InputHandler.NormInputX;  //공중 공격을 따로 만들예정.
             if (shieldInput)
             {
                 stateMachine.ChangeState(player.ShieldState);

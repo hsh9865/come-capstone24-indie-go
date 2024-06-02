@@ -13,7 +13,8 @@ public class SkillMovement : SkillComponent<SkillMovementData>
     {
         if (currentSkillData != null)
         {
-            CoreMovement.SetVelocity(currentSkillData.Velocity, currentSkillData.Direction, CoreMovement.FacingDirection);
+            CoreMovement.SetVelocityX(currentSkillData.Velocity);
+            //CoreMovement.SetVelocity(currentSkillData.Velocity, currentSkillData.Direction, CoreMovement.FacingDirection);
         }
     }
 
@@ -21,7 +22,14 @@ public class SkillMovement : SkillComponent<SkillMovementData>
     {
         CoreMovement.SetVelocityZero();
     }
-
+    public void HandleStopMovementX()
+    {
+        CoreMovement.SetVelocityX(0f);
+    }
+    public int GetFacingDirection()
+    {
+        return CoreMovement.FacingDirection;
+    }
     protected override void Start()
     {
         base.Start();

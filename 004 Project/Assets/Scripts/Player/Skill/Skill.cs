@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-
-
 public class Skill : MonoBehaviour
 {
     public Core Core { get; private set; }
 
     public event Action OnEnter;
     public event Action OnExit;
+    public event Action OnLogicUpdate;
+    public event Action OnHold;
+    public bool hold;
     public SkillDataEx Data { get; private set; }
     private Animator baseAnim;
     private Animator weaponAnim;
-
+    private bool isSkillActive;
     public SkillAnimEventHandler EventHandler { get; private set; }
     public GameObject BaseGameObject { get; private set; }
     public GameObject WeaponGameObject { get; private set; }
@@ -32,6 +33,17 @@ public class Skill : MonoBehaviour
 
         EventHandler = BaseGameObject.GetComponent<SkillAnimEventHandler>();
     }
+    private void Start()
+    {
+        gameObject.SetActive(false);
+
+    }
+
+    protected virtual void Update()
+    {
+        if(isSkillActive)
+            OnLogicUpdate?.Invoke();
+    }
     public void SetCore(Core core)
     {
         this.Core = core;
@@ -42,6 +54,9 @@ public class Skill : MonoBehaviour
     }
     public void EnterSkill()
     {
+        gameObject.SetActive(true);
+
+        isSkillActive = true;
         baseAnim.SetBool("Active", true);
         weaponAnim.SetBool("Active", true);
 
@@ -49,6 +64,9 @@ public class Skill : MonoBehaviour
     }
     public void ExitSkill()
     {
+        gameObject.SetActive(false);
+
+        isSkillActive = false;
         baseAnim.SetBool("Active", false);
         weaponAnim.SetBool("Active", false);
 
@@ -76,5 +94,9 @@ public class Skill : MonoBehaviour
             Destroy(component);
         }
         initializedComponents.Clear();
+    }
+    public void HoldSkill()
+    {
+        OnHold?.Invoke();
     }
 }

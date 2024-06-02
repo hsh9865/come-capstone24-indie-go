@@ -17,8 +17,8 @@ public class PlayerGroundedState : PlayerState
     private bool dashInput;
     private bool shieldInput;
     private bool skillInput;
-    private bool isGrounded;
 
+    private bool isGrounded;
     public PlayerGroundedState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string AnimBoolName) : base(player, stateMachine, playerData, AnimBoolName)
     {
 
@@ -51,6 +51,7 @@ public class PlayerGroundedState : PlayerState
         jumpInput = player.InputHandler.JumpInput;
         dashInput = player.InputHandler.DashInput;
         shieldInput = player.InputHandler.ShieldInput;
+        skillInput = player.InputHandler.SkillInput;
 
         //땅에 있다면 언제든지 실행 가능한 코드.
         if (player.InputHandler.AttackInputs[(int)CombatInputs.primary])

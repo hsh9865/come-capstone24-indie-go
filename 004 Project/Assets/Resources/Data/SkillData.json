@@ -3,7 +3,14 @@
     {
       "key": "SpearSkill",
       "value": {
-        "damageData": { "Damage": 50 },
+        "damageData": {
+          "Damage": 9,
+          "knockbackAngle": {
+            "x": 1,
+            "y": 1
+          }, // 예시 값
+          "knockbackStrength": 10 // 예시 값
+        },
         "cooldownData": { "Cooldown": 5 },
         "movementData": {
           "Direction": {
@@ -12,14 +19,24 @@
           },
           "Velocity": 10
         },
-        "spearData": { "ThrowDistance": 15 },
+        "spearData": {
+          "ThrowSpeed": 10,
+          "ThrowDistance": 7
+        },
         "explosionData": null
       }
     },
     {
       "key": "ExplosionSkill",
       "value": {
-        "damageData": { "Damage": 100 },
+        "damageData": {
+          "Damage": 12,
+          "knockbackAngle": {
+            "x": 1,
+            "y": 0
+          }, // 예시 값
+          "knockbackStrength": 30 // 예시 값
+        },
         "cooldownData": { "Cooldown": 10 },
         "movementData": null,
         "spearData": null,
@@ -28,4 +45,3 @@
     }
   ]
 }
-

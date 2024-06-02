@@ -13,7 +13,7 @@ public class PlayerManager : MonoBehaviour
 
     private void CreatePlayer()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.Find("Player");
 
         if (player == null)
             player = GameManager.Resource.Instantiate("Player");
@@ -32,5 +32,4 @@ public class PlayerManager : MonoBehaviour
     {
         return skillSetup.GetCurrentSkill();
     }
-
 }
