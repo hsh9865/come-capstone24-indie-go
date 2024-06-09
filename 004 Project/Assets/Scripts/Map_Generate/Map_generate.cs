@@ -6,6 +6,7 @@ using System.Diagnostics.Tracing;
 
 public class Map_generate : MonoBehaviour
 {
+    [SerializeField] private GameObject player;
     public static Map_generate instance;
     public const int max = 4;
     public Map_Node[,] map_list = new Map_Node[max, max];
@@ -14,7 +15,7 @@ public class Map_generate : MonoBehaviour
         next_num;
     void Awake()
     {
-        if (null == instance)
+        if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(this.gameObject);
@@ -26,7 +27,7 @@ public class Map_generate : MonoBehaviour
     }
     void Start()
     {
-        Debug.Log("Open");
+        
         for (int i = 0; i < max; i++)
         {
             for (int j = 0; j < max; j++)
@@ -169,7 +170,12 @@ public class Map_generate : MonoBehaviour
             for (int j = 0; j < 4; j++)
             {
                 int rand = UnityEngine.Random.Range(0, 4);
-                if (map_list[0, j].way == 9) map_list[0, j].map_type = Map_Node.Map_type.Enterance;
+                if (map_list[0, j].way == 9)
+                {
+                    map_list[0, j].map_type = Map_Node.Map_type.Enterance;
+                    player.transform.position= new Vector3(map_list[0, j].nodeRect.x,map_list[0, j].nodeRect.y,1);
+                }
+                
                 else if (map_list[3, j].way == 2){
                     map_list[3, j].map_type = Map_Node.Map_type.Exit;
                     map_list[3,j].way = 8;

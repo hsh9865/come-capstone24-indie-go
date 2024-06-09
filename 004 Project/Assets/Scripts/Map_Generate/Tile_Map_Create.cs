@@ -26,7 +26,7 @@ public class Tile_Map_Create : MonoBehaviour
     
     void Awake()
     {
-        if (null == instance)
+        if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(this.gameObject);
@@ -48,7 +48,7 @@ public class Tile_Map_Create : MonoBehaviour
 
     public void Divide_Tile(Map_Node parent, TileNode root,int n)
     {
-        Debug.Log("check");
+        
         if (n == Max_Depth)
         {
             GenerateRoom(parent,root);
@@ -62,14 +62,14 @@ public class Tile_Map_Create : MonoBehaviour
         //나올 수 있는 최대 길이와 최소 길이중에서 랜덤으로 한 값을 선택
         if (root.width >= root.height) //가로가 더 길었던 경우에는 좌 우로 나누게 될 것이며, 이 경우에는 세로 길이는 변하지 않는다.
         {
-            Debug.Log(root.x+split+" : x");
+            
             root.leftNode = new TileNode(root.x,root.y,split,root.height);
             root.rightNode= new TileNode(root.x+split,root.y,root.width-split,root.height);
             // for(int i = 0 ; i < root.height;i++) parent.tile[root.x+split,root.y+i] = 1;
         }
         else
         {
-            Debug.Log(root.y+split+" : y");
+            
             root.leftNode = new TileNode(root.x,root.y,root.width,split);
             root.rightNode= new TileNode(root.x,root.y+split,root.width,root.height-split);
             // for(int i = 0 ; i < root.width;i++) parent.tile[root.x+i,root.y+split] = 1;
@@ -173,30 +173,42 @@ public class Tile_Map_Create : MonoBehaviour
     }
 
     
-    public void Horiontal_add(Map_Node parent_Left,Map_Node parent_Rigt, TileNode Child_Left, TileNode Child_Right)
+    private void AddTilesInRange(int[,] tileArray, int startX, int endX, int startY, int endY, int value)
+{
+    for (int i = startX; i <= endX; i++)
     {
-        int left_node_center_x,left_node_center_y,right_node_center_x,right_node_center_y;
-        left_node_center_x = Child_Left.x + Child_Left.width/2;
-        left_node_center_y = Child_Left.y + Child_Left.height/2;
-        right_node_center_x = Child_Right.x + Child_Right.width/2;
-        right_node_center_y = Child_Right.y + Child_Right.height/2;
-        int Upper_y = Mathf.Max(left_node_center_y,right_node_center_y);
-        int lower_y = Mathf.Min(left_node_center_y,right_node_center_y);
-        for(int i = left_node_center_x;i < 20;i++) parent_Left.tile[i,left_node_center_y] = 1;
-        for(int i = 0;i<right_node_center_x;i++) parent_Rigt.tile[i,right_node_center_y] = 1;
-        for(int i = lower_y;i<=Upper_y;i++) parent_Left.tile[19,i]=1;
+        for (int j = startY; j <= endY; j++)
+        {
+            tileArray[i, j] = value;
+        }
     }
-    public void Vertical_add(Map_Node parent_Up,Map_Node parent_Down, TileNode Child_Up, TileNode Child_Down)
-    {
-        int up_node_center_x,up_node_center_y,down_node_center_x,down_node_center_y;
-        up_node_center_x = Child_Up.x + Child_Up.width/2;
-        up_node_center_y = Child_Up.y + Child_Up.height/2;
-        down_node_center_x = Child_Down.x + Child_Down.width/2;
-        down_node_center_y = Child_Down.y + Child_Down.height/2;
-        int Upper_x = Mathf.Max(up_node_center_x,down_node_center_x);
-        int Lower_x = Mathf.Min(up_node_center_x,down_node_center_x);
-        for(int i = up_node_center_y;i<20;i++) parent_Up.tile[up_node_center_x,i]=1;
-        for(int i =0;i<down_node_center_y;i++) parent_Down.tile[down_node_center_x,i]=1;
-        for(int i =Lower_x;i<Upper_x;i++) parent_Down.tile[i,0]=1;
-    }
+}
+
+public void Horiontal_add(Map_Node parent_Left, Map_Node parent_Rigt, TileNode Child_Left, TileNode Child_Right)
+{
+    int leftNodeCenterX = Child_Left.x + Child_Left.width / 2;
+    int leftNodeCenterY = Child_Left.y + Child_Left.height / 2;
+    int rightNodeCenterX = Child_Right.x + Child_Right.width / 2;
+    int rightNodeCenterY = Child_Right.y + Child_Right.height / 2;
+    int upperY = Mathf.Max(leftNodeCenterY, rightNodeCenterY);
+    int lowerY = Mathf.Min(leftNodeCenterY, rightNodeCenterY);
+    
+    AddTilesInRange(parent_Left.tile, leftNodeCenterX, 19, leftNodeCenterY, leftNodeCenterY, 1);
+    AddTilesInRange(parent_Rigt.tile, 0, rightNodeCenterX, rightNodeCenterY, rightNodeCenterY, 1);
+    AddTilesInRange(parent_Left.tile, 19, 19, lowerY, upperY, 1);
+}
+
+public void Vertical_add(Map_Node parent_Up, Map_Node parent_Down, TileNode Child_Up, TileNode Child_Down)
+{
+    int upNodeCenterX = Child_Up.x + Child_Up.width / 2;
+    int upNodeCenterY = Child_Up.y + Child_Up.height / 2;
+    int downNodeCenterX = Child_Down.x + Child_Down.width / 2;
+    int downNodeCenterY = Child_Down.y + Child_Down.height / 2;
+    int upperX = Mathf.Max(upNodeCenterX, downNodeCenterX);
+    int lowerX = Mathf.Min(upNodeCenterX, downNodeCenterX);
+    
+    AddTilesInRange(parent_Up.tile, upNodeCenterX, upNodeCenterX, upNodeCenterY, 19, 1);
+    AddTilesInRange(parent_Down.tile, downNodeCenterX, downNodeCenterX, 0, downNodeCenterY, 1);
+    AddTilesInRange(parent_Down.tile, lowerX, upperX, 0, 0, 1);
+}
 }
