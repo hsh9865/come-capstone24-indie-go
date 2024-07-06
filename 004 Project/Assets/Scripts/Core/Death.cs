@@ -8,8 +8,16 @@ public class Death : CoreComponent
 
     private ParticleManager ParticleManager => particleManager ? particleManager : core.GetCoreComponent(ref particleManager);
     private ParticleManager particleManager;
-    private Stats Stats { get => stats ?? core.GetCoreComponent(ref stats); }
-    private Stats stats;
+    private ICharacterStats stats;
+
+
+    protected override void Awake()
+    {
+        base.Awake();
+        stats = transform.root.GetComponentInChildren<ICharacterStats>();
+        if (stats == null)
+            Debug.Log("stats ºö");
+    }
 
 
     private void Die()
@@ -22,11 +30,11 @@ public class Death : CoreComponent
     }
     private void OnEnable()
     {
-        Stats.OnHealthZero -= Die;
-        Stats.OnHealthZero += Die;
+        stats.OnHealthZero -= Die;
+        stats.OnHealthZero += Die;
     }
     private void OnDisable()
     {
-        Stats.OnHealthZero -= Die; ;
+        stats.OnHealthZero -= Die; ;
     }
 }

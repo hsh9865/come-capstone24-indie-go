@@ -36,7 +36,7 @@ public class Stats : CoreComponent
         CurHp = maxHp;
     }
 
-    public void DecreaseHealth(float amount)
+    public void DecreaseHealth(GameObject gameObject, float amount)
     {
         float damage = Mathf.Max(0, amount - Defense);      //Damage부분은 따로 계산하는 로직을 구현해서 최종 데미지를 넣을 예정.
         CurHp -= (int)damage;

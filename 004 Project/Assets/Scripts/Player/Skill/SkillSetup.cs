@@ -23,7 +23,10 @@ public class SkillSetup
     private void InitializePrefab()
     {
         arrow = GameManager.Resource.Load<GameObject>("Prefabs/Arrow");
-        prefabParent = GameObject.Find("SkillPrefab").transform;
+        GameObject go = GameObject.Find("SkillPrefab");
+        if (go == null)
+            go = new GameObject { name = "SkillPrefab" };
+        prefabParent = go.transform;
         
         //기타 prefab 초기화
     }

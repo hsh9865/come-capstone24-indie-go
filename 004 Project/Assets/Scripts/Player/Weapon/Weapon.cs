@@ -7,11 +7,13 @@ public class Weapon : MonoBehaviour
     public Animator baseAnimator { get; protected set; }
     public Animator weaponAnimator { get; protected set; }
 
+    protected CharacterStats<PlayerStatsData> playerStats;
     protected PlayerAttackState attackState;
     protected PlayerShieldState shieldState { get; private set; }
     protected AggressiveWeaponHitboxToWeapon aggressiveWeaponHitboxToWeapon;
     protected ShieldWeaponHitboxToWeapon shieldWeaponHitboxToWeapon;
     protected BaseAnimationToWeapon weaponAnimationToWeapon;
+
 
     public PlayerShieldState GetPlayerShieldState()
     {
@@ -20,6 +22,11 @@ public class Weapon : MonoBehaviour
 
     protected virtual void Start()
     {
+        playerStats = transform.root.GetComponentInChildren<PlayerStats>(); 
+        if (playerStats == null)
+        {
+            Debug.LogError("CharacterStats 컴포넌트를 찾을 수 없습니다.");
+        }
         baseAnimator = transform.Find("Base").GetComponent<Animator>();     //GetComponentInChildren<Animator>();
         weaponAnimator = transform.Find("Weapon").GetComponent<Animator>();
         aggressiveWeaponHitboxToWeapon = transform.GetComponentInChildren<AggressiveWeaponHitboxToWeapon>();

@@ -10,12 +10,11 @@ public class Combat : CoreComponent, IDamageable, IKnockbackable
     private Movement Movement { get => movement ?? core.GetCoreComponent(ref movement); }
     private CollisionSenses CollisionSenses { get => collisionSenses ?? core.GetCoreComponent(ref collisionSenses); }
 
-    private Stats Stats { get => stats ?? core.GetCoreComponent(ref stats); }
     private ParticleManager ParticleManager => particleManager ? particleManager : core.GetCoreComponent(ref particleManager);
 
     private Movement movement;
     private CollisionSenses collisionSenses;
-    private Stats stats;
+    private ICharacterStats stats;
     private ParticleManager particleManager;
 
 
@@ -27,6 +26,9 @@ public class Combat : CoreComponent, IDamageable, IKnockbackable
     protected override void Awake()
     {
         base.Awake();
+        stats = transform.root.GetComponentInChildren<ICharacterStats>();
+        if (stats == null)
+            Debug.Log("stats 빔");
     }
 
     public override void LogicUpdate()
@@ -39,7 +41,7 @@ public class Combat : CoreComponent, IDamageable, IKnockbackable
     {
        // Debug.Log(core.transform.parent.name + " 피격");
        // 주는 피해량 계산.  방어력, 받는피해 감소 계산
-        Stats?.DecreaseHealth(amount);
+        stats?.DecreaseHealth(amount);
         ParticleManager?.StartParticlesWithRandomRotation(damageParticles);
     }
 

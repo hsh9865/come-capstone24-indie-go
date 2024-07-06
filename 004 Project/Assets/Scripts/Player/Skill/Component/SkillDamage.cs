@@ -47,7 +47,8 @@ public class SkillDamage : SkillComponent<SkillDamageData>, IAttackable
 
         if (damageable != null)
         {
-            damageable.Damage(currentSkillData.Damage);
+            damageable.Damage(currentSkillData.Damage * playerStats.AttackDamage);
+            Debug.Log("스킬 데미지 : " + currentSkillData.Damage * playerStats.AttackDamage);
         }
         IKnockbackable knockbackable = collision.GetComponentInChildren<IKnockbackable>();
         if (knockbackable != null)

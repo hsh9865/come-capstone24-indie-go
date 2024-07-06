@@ -11,10 +11,10 @@ public class MeleeAttackState : AttackState
 
     private Movement movement;
     private CollisionSenses collisionSenses;
-
+    private CharacterStats<EnemyStatsData> enemyStats;
     private D_MeleeAttackState stateData;
 
-    public float AttackDamage => stateData.attackDamage; // 공격력 프로퍼티
+    public float AttackDamage => enemyStats.AttackDamage; // 공격력 프로퍼티
     public Vector2 KnockbackAngle => stateData.knockbackAngle; // 넉백 각도 프로퍼티
     public float KnockbackStrength => stateData.knockbackStrength; // 넉백 강도 프로퍼티
     public int FacingDirection => Movement.FacingDirection;
@@ -22,7 +22,9 @@ public class MeleeAttackState : AttackState
     public MeleeAttackState(Entity entity, MonsterStateMachine stateMachine, string animBoolName, Transform attackPosition, D_MeleeAttackState stateData) : base(entity, stateMachine, animBoolName, attackPosition)
     {
         attackCheck = entity.transform.GetComponentInChildren<AnimationToAttackCheck>();
+        enemyStats = entity.transform.GetComponentInChildren<EnemyStats>();
         this.stateData = stateData;
+
     }
 
 
@@ -63,7 +65,7 @@ public class MeleeAttackState : AttackState
         attackCheck.FinishAttack();
     }
 
-    //방패로직 다바꿔야함
+    //방패로직 수정할 수 있음
     public override void HandleAttack(Collider2D collision)
     {
         base.HandleAttack(collision);
@@ -87,7 +89,7 @@ public class MeleeAttackState : AttackState
             {
                 if (damageable != null)
                 {
-                    damageable.Damage(stateData.attackDamage);
+                    damageable.Damage(AttackDamage);
                 }
 
 

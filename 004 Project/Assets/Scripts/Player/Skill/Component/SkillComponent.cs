@@ -10,6 +10,7 @@ public abstract class SkillComponent : MonoBehaviour
 
     protected bool isSkillActive;
 
+    protected PlayerStats playerStats;
     public virtual void Init()
     {
 
@@ -18,6 +19,7 @@ public abstract class SkillComponent : MonoBehaviour
     protected virtual void Awake()
     {
         skill = GetComponent<Skill>();
+        playerStats = transform.root.GetComponentInChildren<PlayerStats>();
     }
 
     protected virtual void Start()

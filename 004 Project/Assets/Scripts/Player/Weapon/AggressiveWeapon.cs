@@ -84,7 +84,8 @@ public class AggressiveWeapon : Weapon
 
         if (damageable != null)
         {
-            damageable.Damage(weaponData.attackDamage[CurrentAttackCounter]); // 공격 계수 * playerAttackDamage
+            damageable.Damage(weaponData.attackDamage[CurrentAttackCounter] * playerStats.AttackDamage); // 공격 계수 * playerAttackDamage
+            Debug.Log("데미지 : " + weaponData.attackDamage[CurrentAttackCounter] * playerStats.AttackDamage);
             //detectedDamageable.Add(damageable);
         }
         IKnockbackable knockbackable = collision.GetComponentInChildren<IKnockbackable>();
