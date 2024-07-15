@@ -6,6 +6,17 @@ public class AnimationToStateMachine : MonoBehaviour
 {
     public AttackState attackState;
 
+    private void TriggerCheck()
+    {
+        attackState.TriggerCheck();
+    }
+
+    private void FinishCheck()
+    {
+        attackState.FinishCheck();
+    }
+
+
     private void TriggerAttack()
     {
         attackState.TriggerAttack();

@@ -11,6 +11,8 @@ public class PlayerData : ScriptableObject
     [Header("In Air State")]
     public float coyotoTime = 0.2f;
 
+    [Header("Hit State")]
+    public float hitRecoveryTime = 0.25f;
 
     [Header("Jump State")]
     public float jumpVelocity = 15f;

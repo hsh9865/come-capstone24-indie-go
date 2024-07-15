@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/*
 public class AggressiveWeaponHitboxToWeapon : MonoBehaviour
 {
     private AggressiveWeapon weapon;
@@ -27,3 +27,5 @@ public class AggressiveWeaponHitboxToWeapon : MonoBehaviour
         isAlreadyHit = false;
     }
 }
+
+*/

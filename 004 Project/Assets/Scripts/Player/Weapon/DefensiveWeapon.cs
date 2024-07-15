@@ -21,8 +21,9 @@ public class DefensiveWeapon : Weapon
     public ShieldExitState ShieldExitState { get; private set; }
     public ShieldHoldState ShieldHoldState { get; private set; }
     public ShieldParryState ShieldParryState { get; private set; }
+    public bool isDefending;
 
-    
+
     private void Awake()
     {
         stateMachine = new ShieldStateMachine();
@@ -32,13 +33,15 @@ public class DefensiveWeapon : Weapon
         base.Start();
         //Start에서 초기화 하거나 Player에서 초기화
         ShieldEnterState = new ShieldEnterState(this, shieldState, stateMachine, weaponData, ShieldStateName.Enter);
-        ShieldExitState = new ShieldExitState(this, shieldState, shieldWeaponHitboxToWeapon, stateMachine, weaponData, ShieldStateName.Exit);
+        ShieldExitState = new ShieldExitState(this, shieldState,  stateMachine, weaponData, ShieldStateName.Exit);
         ShieldHoldState = new ShieldHoldState(this, shieldState, stateMachine, weaponData, ShieldStateName.Hold);
         ShieldParryState = new ShieldParryState(this, shieldState, stateMachine, weaponData, ShieldStateName.Parry);
 
         weaponAnimationToWeapon.OnAction += AnimationActionTrigger;
         weaponAnimationToWeapon.OnFinish += AnimationFinishTrigger;
         weaponAnimationToWeapon.OnNextState += AnimationNextStateTrigger;
+
+        isDefending = false;
     }
 
     private void Update()
@@ -49,7 +52,9 @@ public class DefensiveWeapon : Weapon
     {
         base.EnterWeapon();
         stateMachine.Initialize(ShieldEnterState);
-        shieldWeaponHitboxToWeapon.isDefending = true;
+        isDefending = true;
+
+
     }
 
     public override void ExitWeapon()
@@ -90,7 +95,7 @@ public class DefensiveWeapon : Weapon
 
     public void CheckShield(GameObject go, float attackDamage, Vector2 knockbackAngle, float knockbackStrength, int facingDirection)
     {
-        shieldWeaponHitboxToWeapon.isDefending = true;
+        isDefending = true;
         // 방패 상태 확인
         if (stateMachine.CurrentState is ShieldEnterState)
             stateMachine.ChangeState(ShieldParryState);
@@ -99,6 +104,10 @@ public class DefensiveWeapon : Weapon
        // ShieldWeaponHitboxToWeapon.ResetAlreadyHit();
     }
 
+    public override void HandleCollision(Collider2D collision)
+    {
+        isDefending = true;
+    }
 }
 
 public class ShieldStateMachine
@@ -181,6 +190,8 @@ public class ShieldEnterState : ShieldState
         base.Enter();
         isDone = false;
         playerShieldState.Movement?.SetVelocityZero();
+
+        GameManager.PlayerManager.PlayerDataCollect.RecordAction(PlayerDataCollectName.ParryAttempt);
     }
     public override void Exit()
     {
@@ -216,10 +227,8 @@ public class ShieldEnterState : ShieldState
 public class ShieldExitState : ShieldState
 {
     private bool isDone;
-    private ShieldWeaponHitboxToWeapon shieldWeaponHitboxToWeapon;
-    public ShieldExitState(DefensiveWeapon weapon, PlayerShieldState playerShieldState, ShieldWeaponHitboxToWeapon shieldWeaponHitboxToWeapon, ShieldStateMachine stateMachine, Shield_WeaponData weaponData, string animBoolName) : base(weapon, playerShieldState,stateMachine, weaponData, animBoolName)
+    public ShieldExitState(DefensiveWeapon weapon, PlayerShieldState playerShieldState, ShieldStateMachine stateMachine, Shield_WeaponData weaponData, string animBoolName) : base(weapon, playerShieldState,stateMachine, weaponData, animBoolName)
     {
-        this.shieldWeaponHitboxToWeapon = shieldWeaponHitboxToWeapon;
     }
 
     public override void Enter()
@@ -227,7 +236,7 @@ public class ShieldExitState : ShieldState
         base.Enter();
 
         playerShieldState.Movement?.SetVelocityX(0);
-        shieldWeaponHitboxToWeapon.isDefending = false;
+        weapon.isDefending = false;
         isDone = false;
 
 
@@ -270,6 +279,7 @@ public class ShieldHoldState : ShieldState
     public override void Enter()
     {
         base.Enter();
+        GameManager.PlayerManager.PlayerDataCollect.RecordAction(PlayerDataCollectName.DefenceAttempt);
     }
     public override void Exit()
     {
@@ -303,7 +313,7 @@ public class ShieldHoldState : ShieldState
         IDamageable playerDamageable = weapon.transform.root.GetComponentInChildren<IDamageable>();
         if (playerDamageable != null)
         {
-            Debug.Log("홀드 피해 감소");
+         //   Debug.Log("홀드 피해 감소");
             playerDamageable.DamageWithShield(attackDamage); // 피해 감소
         }
 
@@ -313,6 +323,8 @@ public class ShieldHoldState : ShieldState
         {
             playerKnockbackable.KnockbackWithShield(knockbackAngle, knockbackStrength, facingDirection); // 넉백 감소
         }
+
+        GameManager.PlayerManager.PlayerDataCollect.RecordAction(PlayerDataCollectName.DefenceSuccess);
     }
 }
 
@@ -354,7 +366,7 @@ public class ShieldParryState : ShieldState
         IDamageable damageable = go.GetComponentInChildren<IDamageable>();
         if (damageable != null)
         {
-            Debug.Log("패링");
+            //Debug.Log("패링");
             damageable.Damage(weaponData.parryDamage); // 패링 시 적에게 피해 줌
         }
         //적에게 넉백
@@ -363,6 +375,8 @@ public class ShieldParryState : ShieldState
         {
             knockbackable.Knockback(weaponData.knockbackAngle, weaponData.knockbackStrength, playerShieldState.Movement.FacingDirection);
         }
+        GameManager.PlayerManager.PlayerDataCollect.RecordAction(PlayerDataCollectName.ParrySuccess);
+
     }
 
     public override void AnimationFinishTrigger()

@@ -3,6 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+public static class PlayerDataCollectName
+{
+    public const string AttackAttempt = "AttackAttempt";
+    public const string AttackSuccess = "AttackSuccess";
+    public const string DefenceAttempt = "DefenceAttempt";
+    public const string DefenceSuccess = "DefenceSuccess";
+    public const string ParryAttempt = "ParryAttempt";
+    public const string ParrySuccess = "ParrySuccess";
+    public const string DashAttempt = "DashAttempt";
+    public const string DashSuccess = "DashSuccess";
+    public const string DashFailure = "DashFailure";
+}
 public static class PlayerAnimStatesName
 {
     public const string Idle = "Idle";
@@ -12,6 +24,7 @@ public static class PlayerAnimStatesName
     public const string InAir = "InAir";
     public const string Action = "Action";
     public const string Dash = "Dash";
+    public const string Hit = "Hit";
 }
 public class Player : MonoBehaviour
 {
@@ -28,6 +41,7 @@ public class Player : MonoBehaviour
     public PlayerDashState DashState { get; private set; }
     public PlayerShieldState ShieldState { get; private set; }
     public PlayerSkillState SkillState { get; private set; }
+    public PlayerHitState HitState { get; private set; }
 
     [SerializeField]
     private PlayerData playerData;
@@ -72,6 +86,7 @@ public class Player : MonoBehaviour
         DashState = new PlayerDashState(this, StateMachine, playerData, PlayerAnimStatesName.Dash);
         ShieldState = new PlayerShieldState(this, StateMachine, playerData, PlayerAnimStatesName.Action, shieldWeapon);
         SkillState = new PlayerSkillState(this, StateMachine, playerData, PlayerAnimStatesName.Action, skill);
+        HitState = new PlayerHitState(this, StateMachine, playerData, PlayerAnimStatesName.InAir);
 
         primaryWeapon.InitializeAttackWeapon(PrimaryAttackState);
         shieldWeapon.InitializeShieldWeapon(ShieldState);

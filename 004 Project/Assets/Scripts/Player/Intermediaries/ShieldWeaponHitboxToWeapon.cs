@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
 public class ShieldWeaponHitboxToWeapon : MonoBehaviour
 {
     private DefensiveWeapon weapon;
@@ -31,3 +32,4 @@ public class ShieldWeaponHitboxToWeapon : MonoBehaviour
     }
 
 }
+*/

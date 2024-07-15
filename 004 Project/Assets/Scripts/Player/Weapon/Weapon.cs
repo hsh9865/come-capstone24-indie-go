@@ -2,16 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class Weapon : MonoBehaviour, IWeapon
 {
     public Animator baseAnimator { get; protected set; }
     public Animator weaponAnimator { get; protected set; }
 
     protected CharacterStats<PlayerStatsData> playerStats;
     protected PlayerAttackState attackState;
+    protected CollisionHandler collisionHandler;
     protected PlayerShieldState shieldState { get; private set; }
-    protected AggressiveWeaponHitboxToWeapon aggressiveWeaponHitboxToWeapon;
-    protected ShieldWeaponHitboxToWeapon shieldWeaponHitboxToWeapon;
     protected BaseAnimationToWeapon weaponAnimationToWeapon;
 
 
@@ -20,18 +19,23 @@ public class Weapon : MonoBehaviour
         return shieldState;
     }
 
+    private void Awake()
+    {
+        collisionHandler = GetComponentInChildren<CollisionHandler>();
+
+        collisionHandler.OnColliderDetected += HandleCollision;
+    }
     protected virtual void Start()
     {
+
         playerStats = transform.root.GetComponentInChildren<PlayerStats>(); 
         if (playerStats == null)
         {
-            Debug.LogError("CharacterStats 컴포넌트를 찾을 수 없습니다.");
+            Debug.LogError("PlayerStats 컴포넌트를 찾을 수 없습니다.");
         }
         baseAnimator = transform.Find("Base").GetComponent<Animator>();     //GetComponentInChildren<Animator>();
         weaponAnimator = transform.Find("Weapon").GetComponent<Animator>();
-        aggressiveWeaponHitboxToWeapon = transform.GetComponentInChildren<AggressiveWeaponHitboxToWeapon>();
 
-        shieldWeaponHitboxToWeapon = transform.GetComponentInChildren<ShieldWeaponHitboxToWeapon>();
         weaponAnimationToWeapon = transform.GetComponentInChildren<BaseAnimationToWeapon>();
         gameObject.SetActive(false);
 
@@ -77,5 +81,14 @@ public class Weapon : MonoBehaviour
 
     public virtual void AnimationFinishTrigger()
     {
+    }
+
+    public virtual void HandleCollision(Collider2D collision)
+    {
+    }
+
+    private void OnDestroy()
+    {
+        collisionHandler.OnColliderDetected -= HandleCollision;
     }
 }

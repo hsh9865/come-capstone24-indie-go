@@ -56,6 +56,12 @@ public class PlayerAttackState : PlayerAbilityState
             {
                 Movement?.SetVelocityX(velocityToSet * Movement.FacingDirection);
             }
+
+            if(GameManager.SharedCombatDataManager.IsPlayerHit)
+            {
+                stateMachine.ChangeState(player.HitState);
+            }
+
         }
 
     }

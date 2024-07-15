@@ -83,7 +83,11 @@ public class PlayerGroundedState : PlayerState
             //player.InAirState.StartCoyoteTime();
             stateMachine.ChangeState(player.InAirState);
         }
-        
+        else if (GameManager.SharedCombatDataManager.IsPlayerHit)
+        {
+            stateMachine.ChangeState(player.HitState);
+        }
+
 
     }
     public override void PhysicsUpdate()

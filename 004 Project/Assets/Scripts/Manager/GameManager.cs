@@ -11,11 +11,12 @@ public class GameManager : MonoBehaviour
     DataManager data = new DataManager();
     ResourceManager resource = new ResourceManager();
     PlayerManager player;
+    SharedCombatDataManager sharedData = new SharedCombatDataManager();
 
     public static DataManager Data { get{ return Instance.data; } }
     public static ResourceManager Resource { get { return Instance.resource; } }
     public static PlayerManager PlayerManager { get { return Instance.player; } }
-
+    public static SharedCombatDataManager SharedCombatDataManager { get { return Instance.sharedData; } }
     void Start()
     {
         Init();

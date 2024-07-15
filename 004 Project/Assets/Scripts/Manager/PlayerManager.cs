@@ -5,6 +5,8 @@ public class PlayerManager : MonoBehaviour
     private GameObject player;
     private SkillSetup skillSetup;
 
+    public PlayerDataCollect PlayerDataCollect { get; private set; }
+
     public void Initialize()
     {
         CreatePlayer();
@@ -19,6 +21,7 @@ public class PlayerManager : MonoBehaviour
             player = GameManager.Resource.Instantiate("Player");
 
 
+        PlayerDataCollect = new PlayerDataCollect();
 
         Camera.main.gameObject.GetComponent<MainCameraController>().SetPlayer(player);
     }

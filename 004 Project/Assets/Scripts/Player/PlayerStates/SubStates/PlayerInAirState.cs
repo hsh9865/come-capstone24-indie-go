@@ -78,6 +78,10 @@ public class PlayerInAirState : PlayerState
         {
             stateMachine.ChangeState(player.SkillState);
         }
+        else if (GameManager.SharedCombatDataManager.IsPlayerHit)
+        {
+            stateMachine.ChangeState(player.HitState);
+        }
         else
         {
             Movement?.CheckIfShouldFlip(xInput);

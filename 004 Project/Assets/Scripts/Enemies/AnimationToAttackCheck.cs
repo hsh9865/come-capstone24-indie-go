@@ -5,8 +5,7 @@ using UnityEngine;
 public class AnimationToAttackCheck : MonoBehaviour
 {
     private AttackState attackState;
-
-    private bool isAlreadyHit;
+    public bool isAlreadyHit { get; private set; }
     private void Start()
     {
         gameObject.SetActive(false);
@@ -30,6 +29,24 @@ public class AnimationToAttackCheck : MonoBehaviour
     public void FinishAttack()
     {
         gameObject.SetActive(false);
+
+        bool isPlayerDashing = GameManager.SharedCombatDataManager.IsPlayerDashing;
+
+        //isAlreadyHit가 false이고, isWithinAttackRange가 true일 때 플레이어가 대시를 사용했었다면
+
+        if(isPlayerDashing)
+        {
+            if(!isAlreadyHit)
+            {
+                GameManager.PlayerManager.PlayerDataCollect.RecordAction(PlayerDataCollectName.DashSuccess);
+            }
+            else
+            {
+                GameManager.PlayerManager.PlayerDataCollect.RecordAction(PlayerDataCollectName.DashFailure);
+            }
+            GameManager.SharedCombatDataManager.SetPlayerDashing(false);
+        }
+
     }
 
     public void InitializedAttackCheck(AttackState attackState)

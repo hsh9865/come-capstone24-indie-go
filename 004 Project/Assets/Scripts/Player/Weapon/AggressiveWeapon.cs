@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AggressiveWeapon : Weapon
+public class AggressiveWeapon : Weapon, IWeapon
 {
     [SerializeField] protected Sword_WeaponData weaponData;
 
@@ -38,6 +38,8 @@ public class AggressiveWeapon : Weapon
         weaponAnimator.SetInteger("Counter", CurrentAttackCounter);
 
         resetCounter = false;
+
+        GameManager.PlayerManager.PlayerDataCollect.RecordAction(PlayerDataCollectName.AttackAttempt);
 
         CheckAttackReInput(weaponData.reInputTime);
     }
@@ -76,29 +78,11 @@ public class AggressiveWeapon : Weapon
         }
     }
 
-
-    public void CheckAttack(Collider2D collision)
-    {
-
-        IDamageable damageable = collision.GetComponentInChildren<IDamageable>();
-
-        if (damageable != null)
-        {
-            damageable.Damage(weaponData.attackDamage[CurrentAttackCounter] * playerStats.AttackDamage); // 공격 계수 * playerAttackDamage
-            Debug.Log("데미지 : " + weaponData.attackDamage[CurrentAttackCounter] * playerStats.AttackDamage);
-            //detectedDamageable.Add(damageable);
-        }
-        IKnockbackable knockbackable = collision.GetComponentInChildren<IKnockbackable>();
-        if(knockbackable != null)
-        {
-            knockbackable.Knockback(weaponData.knockbackAngle, weaponData.knockbackStrength, attackState.Movement.FacingDirection); // 적의 체급에 따른 넉백 정도
-        }
-    }
     public override void AnimationActionTrigger()
     {
         base.AnimationActionTrigger();
 
-        aggressiveWeaponHitboxToWeapon.resetAlreadyHit();
+      //  aggressiveWeaponHitboxToWeapon.resetAlreadyHit();
 
     }
     public override void AnimationFinishTrigger()
@@ -125,5 +109,23 @@ public class AggressiveWeapon : Weapon
     public void AnimationTurnOffFlipTrigger()
     {
         attackState.SetFilpCheck(false);
+    }
+
+    public override void HandleCollision(Collider2D collision)
+    {
+        IDamageable damageable = collision.GetComponentInChildren<IDamageable>();
+
+        if (damageable != null)
+        {
+            damageable.Damage(weaponData.attackDamage[CurrentAttackCounter] * playerStats.AttackDamage); // 공격 계수 * playerAttackDamage
+            Debug.Log("데미지 : " + weaponData.attackDamage[CurrentAttackCounter] * playerStats.AttackDamage);
+            //detectedDamageable.Add(damageable);
+            GameManager.PlayerManager.PlayerDataCollect.RecordAction(PlayerDataCollectName.AttackSuccess);
+        }
+        IKnockbackable knockbackable = collision.GetComponentInChildren<IKnockbackable>();
+        if (knockbackable != null)
+        {
+            knockbackable.Knockback(weaponData.knockbackAngle, weaponData.knockbackStrength, attackState.Movement.FacingDirection); // 적의 체급에 따른 넉백 정도
+        }
     }
 }

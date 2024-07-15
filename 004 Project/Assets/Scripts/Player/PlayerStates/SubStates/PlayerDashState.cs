@@ -17,7 +17,11 @@ public class PlayerDashState : PlayerAbilityState
         base.Enter();
         canDash = false;
         player.InputHandler.UseDashInput();
-
+        GameManager.PlayerManager.PlayerDataCollect.RecordAction(PlayerDataCollectName.DashAttempt);
+        if (GameManager.SharedCombatDataManager.IsPlayerWithinAttackRange)
+        {
+            GameManager.SharedCombatDataManager.SetPlayerDashing(true);
+        }
     }
 
     public override void Exit()
@@ -28,6 +32,7 @@ public class PlayerDashState : PlayerAbilityState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        
 
         if(!isExitingState)
         {
@@ -45,7 +50,14 @@ public class PlayerDashState : PlayerAbilityState
             {
 
             }
+            if (GameManager.SharedCombatDataManager.IsPlayerHit)
+            {
+                stateMachine.ChangeState(player.HitState);
+            }
+
         }
+
+
     }
 
 

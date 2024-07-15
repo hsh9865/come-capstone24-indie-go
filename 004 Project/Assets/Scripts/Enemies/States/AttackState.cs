@@ -62,6 +62,16 @@ public class AttackState : MonsterState
     {
         isAnimationFinished = true;
     }
+
+    public virtual void TriggerCheck()
+    {
+
+    }
+
+    public virtual void FinishCheck()
+    {
+
+    }
     public virtual void HandleAttack(Collider2D collision)
     {
         this.collision = collision;
