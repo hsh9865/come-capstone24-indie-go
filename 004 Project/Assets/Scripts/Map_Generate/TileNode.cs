@@ -15,7 +15,7 @@ public class TileNode
     //     }
     //     //방의 가운데 점. 방과 방을 이을 때 사용
     // }
-    public TileNode(int x,int y,int width=20,int height=20)
+    public TileNode(int x,int y,int width=80,int height=80) // 변경
     {
         this.x = x;
         this.y = y;
