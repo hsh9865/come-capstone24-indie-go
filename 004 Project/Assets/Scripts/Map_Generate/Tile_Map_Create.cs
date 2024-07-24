@@ -16,9 +16,6 @@ public class Tile_Map_Create : MonoBehaviour
                     Side,
                     Corner;
     public TileBase road;
-    // public int[,] horizontal_arr = new int[40,20];
-    // public int[,] vertical_arr = new int[20,40];
-
     public int horizontal = 80, vertical = 80; //변경
 
     [SerializeField] float minimumDevideRate = 0.4f; //공간이 나눠지는 최소 비율
@@ -135,6 +132,9 @@ public class Tile_Map_Create : MonoBehaviour
                     case 8:
                         tile = Floor;
                         break;
+                    case 9:
+                        tile = road;
+                        break;
                     default:
                         break;
                 }
@@ -186,7 +186,7 @@ public class Tile_Map_Create : MonoBehaviour
                 else if(j==y) parent.tile[i,j]=5;
                 else if(j == y+height-1) parent.tile[i,j]=8;
                 else
-                    parent.tile[i, j] = 9;
+                    parent.tile[i, j] = 10;
             }
         }
     }
@@ -230,7 +230,7 @@ public class Tile_Map_Create : MonoBehaviour
             for (int j = leftCenterY; j <= rightCenterY; j++)
             {
                 // if (parent.tile[rightCenterX,j]==0)
-                    parent.tile[rightCenterX, j] = 9;
+                    parent.tile[rightCenterX, j] = 10;
             }
         }
         else
@@ -238,7 +238,7 @@ public class Tile_Map_Create : MonoBehaviour
             for (int j = rightCenterY; j <= leftCenterY; j++)
             {
                 // if (parent.tile[leftCenterX, j]==0)
-                    parent.tile[leftCenterX, j] = 9;
+                    parent.tile[leftCenterX, j] = 10;
             }
         }
     }
@@ -296,7 +296,7 @@ public class Tile_Map_Create : MonoBehaviour
             for (int j = leftCenterY; j <= rightCenterY; j++)
             {
                 // if(parent.tile[rightCenterX, j] ==0)
-                    parent.tile[rightCenterX, j] = 9;
+                    parent.tile[rightCenterX, j] = 10;
             }
         }
         else
@@ -304,7 +304,7 @@ public class Tile_Map_Create : MonoBehaviour
             for (int j = rightCenterY; j <= leftCenterY; j++)
             {
                 // if(parent.tile[leftCenterX, j] ==0)
-                    parent.tile[leftCenterX, j] = 9;
+                    parent.tile[leftCenterX, j] = 10;
             }
         }
 
@@ -331,7 +331,7 @@ public class Tile_Map_Create : MonoBehaviour
 
         AddTilesInRange(parent_Left.tile, leftNodeCenterX, horizontal - 1, leftNodeCenterY, leftNodeCenterY, 9);
         AddTilesInRange(parent_Rigt.tile, 0, rightNodeCenterX, rightNodeCenterY, rightNodeCenterY, 9);
-        AddTilesInRange(parent_Left.tile, horizontal - 1, horizontal - 1, lowerY, upperY, 9);
+        AddTilesInRange(parent_Left.tile, horizontal - 1, horizontal - 1, lowerY, upperY, 10);
     }
 
     public void Vertical_add(Map_Node parent_Up, Map_Node parent_Down, TileNode Child_Up, TileNode Child_Down)
@@ -343,8 +343,8 @@ public class Tile_Map_Create : MonoBehaviour
         int upperX = Mathf.Max(upNodeCenterX, downNodeCenterX);
         int lowerX = Mathf.Min(upNodeCenterX, downNodeCenterX);
 
-        AddTilesInRange(parent_Up.tile, upNodeCenterX, upNodeCenterX, upNodeCenterY, vertical - 1, 9);
-        AddTilesInRange(parent_Down.tile, downNodeCenterX, downNodeCenterX, 0, downNodeCenterY, 9);
-        AddTilesInRange(parent_Down.tile, lowerX, upperX, 0, 0, 9);
+        AddTilesInRange(parent_Up.tile, upNodeCenterX, upNodeCenterX, upNodeCenterY, vertical - 1, 10);
+        AddTilesInRange(parent_Down.tile, downNodeCenterX, downNodeCenterX, 0, downNodeCenterY, 10);
+        AddTilesInRange(parent_Down.tile, lowerX, upperX, 0, 0, 10);
     }
 }
