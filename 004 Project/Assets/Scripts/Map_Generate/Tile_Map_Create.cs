@@ -9,12 +9,13 @@ using UnityEngine.Tilemaps;
 public class Tile_Map_Create : MonoBehaviour
 {
     public static Tile_Map_Create instance = null;
-    public GameObject Tile;
+    
     public Tilemap Tilemap;
     public TileBase wall;
     public TileBase Floor,
                     Side,
-                    Corner;
+                    Corner,
+                    Pillar;
     public TileBase road;
     // public int[,] horizontal_arr = new int[40,20];
     // public int[,] vertical_arr = new int[20,40];
@@ -23,11 +24,14 @@ public class Tile_Map_Create : MonoBehaviour
 
     [SerializeField] float minimumDevideRate = 0.4f; //공간이 나눠지는 최소 비율
     [SerializeField] float maximumDivideRate = 0.6f; //공간이 나눠지는 최대 비율
-    bool left_open,
-         right_open,
-         up_open,
-         down_open;
     int Max_Depth = 2;
+
+    public enum Player_Type
+    {
+        Parry,
+        Dodge,
+        Run
+    }
 
 
     void Awake()
@@ -48,8 +52,8 @@ public class Tile_Map_Create : MonoBehaviour
 
         root.node = new TileNode(0, 0);
         Divide_Tile(root, root.node, 0);
-        ConnectRooms(root, root.node.leftNode);
-        ConnectRooms(root, root.node.rightNode);
+        /*ConnectRooms(root, root.node.leftNode);   길연결 부분 수정해야함
+        ConnectRooms(root, root.node.rightNode);*/
         // Make_Tile(root);
     }
 
@@ -135,6 +139,9 @@ public class Tile_Map_Create : MonoBehaviour
                     case 8:
                         tile = Floor;
                         break;
+                    case 9:
+                        tile = road;
+                        break;
                     default:
                         break;
                 }
@@ -164,6 +171,7 @@ public class Tile_Map_Create : MonoBehaviour
         tree.width = width;
         tree.height = height;
         FillRoom(parent, tree.x, tree.y, tree.width, tree.height);
+        ChangeRoom(parent, tree.x, tree.y, tree.width, tree.height);
     }
     private void FillRoom(Map_Node parent, int x, int y, int width, int height)
     { //room의 rect정보를 받아서 tile을 set해주는 함수
@@ -185,12 +193,24 @@ public class Tile_Map_Create : MonoBehaviour
                 }
                 else if(j==y) parent.tile[i,j]=5;
                 else if(j == y+height-1) parent.tile[i,j]=8;
-                else
-                    parent.tile[i, j] = 9;
+                else parent.tile[i, j] = 10;
             }
         }
     }
-    private void ConnectRooms(Map_Node parent, TileNode root)
+    private void ChangeRoom(Map_Node parent, int x, int y, int width, int height)
+    {
+        int startPoint = UnityEngine.Random.Range(width / 4, width / 2);
+        int rand = UnityEngine.Random.Range(width / 4, width / 2);
+        int altitude = UnityEngine.Random.Range(height / 4  , height / 2);
+        int altitude2 = UnityEngine.Random.Range(height / 4, height / 2);
+        for (int i = x+3; i < x+rand+3;i++)
+        {
+            parent.tile[i, y+ altitude] = 0;
+            parent.tile[i+startPoint, y + altitude + altitude2] = 0;
+        }
+    }
+
+/*    private void ConnectRooms(Map_Node parent, TileNode root)  길연결 부분 수정해야함
     {
         if (root.leftNode == null || root.rightNode == null)
         {
@@ -230,7 +250,7 @@ public class Tile_Map_Create : MonoBehaviour
             for (int j = leftCenterY; j <= rightCenterY; j++)
             {
                 // if (parent.tile[rightCenterX,j]==0)
-                    parent.tile[rightCenterX, j] = 9;
+                    parent.tile[rightCenterX, j] = 10;
             }
         }
         else
@@ -238,7 +258,7 @@ public class Tile_Map_Create : MonoBehaviour
             for (int j = rightCenterY; j <= leftCenterY; j++)
             {
                 // if (parent.tile[leftCenterX, j]==0)
-                    parent.tile[leftCenterX, j] = 9;
+                    parent.tile[leftCenterX, j] = 10;
             }
         }
     }
@@ -279,7 +299,7 @@ public class Tile_Map_Create : MonoBehaviour
             for (int i = leftCenterX; i <= rightCenterX; i++)
             {
                 // if(parent.tile[i, leftCenterY] ==0) 
-                    parent.tile[i, leftCenterY] = 9;
+                    parent.tile[i, leftCenterY] = 10;
             }
         }
         else
@@ -287,7 +307,7 @@ public class Tile_Map_Create : MonoBehaviour
             for (int i = rightCenterX; i <= leftCenterX; i++)
             {
                 // if(parent.tile[i, rightCenterY] ==0)
-                    parent.tile[i, rightCenterY] = 9;
+                    parent.tile[i, rightCenterY] = 10;
             }
         }
 
@@ -296,7 +316,7 @@ public class Tile_Map_Create : MonoBehaviour
             for (int j = leftCenterY; j <= rightCenterY; j++)
             {
                 // if(parent.tile[rightCenterX, j] ==0)
-                    parent.tile[rightCenterX, j] = 9;
+                    parent.tile[rightCenterX, j] = 10;
             }
         }
         else
@@ -304,7 +324,7 @@ public class Tile_Map_Create : MonoBehaviour
             for (int j = rightCenterY; j <= leftCenterY; j++)
             {
                 // if(parent.tile[leftCenterX, j] ==0)
-                    parent.tile[leftCenterX, j] = 9;
+                    parent.tile[leftCenterX, j] = 10;
             }
         }
 
@@ -329,9 +349,9 @@ public class Tile_Map_Create : MonoBehaviour
         int upperY = Mathf.Max(leftNodeCenterY, rightNodeCenterY);
         int lowerY = Mathf.Min(leftNodeCenterY, rightNodeCenterY);
 
-        AddTilesInRange(parent_Left.tile, leftNodeCenterX, horizontal - 1, leftNodeCenterY, leftNodeCenterY, 9);
-        AddTilesInRange(parent_Rigt.tile, 0, rightNodeCenterX, rightNodeCenterY, rightNodeCenterY, 9);
-        AddTilesInRange(parent_Left.tile, horizontal - 1, horizontal - 1, lowerY, upperY, 9);
+        AddTilesInRange(parent_Left.tile, leftNodeCenterX, horizontal - 1, leftNodeCenterY, leftNodeCenterY, 10);
+        AddTilesInRange(parent_Rigt.tile, 0, rightNodeCenterX, rightNodeCenterY, rightNodeCenterY, 10);
+        AddTilesInRange(parent_Left.tile, horizontal - 1, horizontal - 1, lowerY, upperY, 10);
     }
 
     public void Vertical_add(Map_Node parent_Up, Map_Node parent_Down, TileNode Child_Up, TileNode Child_Down)
@@ -343,8 +363,8 @@ public class Tile_Map_Create : MonoBehaviour
         int upperX = Mathf.Max(upNodeCenterX, downNodeCenterX);
         int lowerX = Mathf.Min(upNodeCenterX, downNodeCenterX);
 
-        AddTilesInRange(parent_Up.tile, upNodeCenterX, upNodeCenterX, upNodeCenterY, vertical - 1, 9);
-        AddTilesInRange(parent_Down.tile, downNodeCenterX, downNodeCenterX, 0, downNodeCenterY, 9);
+        AddTilesInRange(parent_Up.tile, upNodeCenterX, upNodeCenterX, upNodeCenterY, vertical - 1, 10);
+        AddTilesInRange(parent_Down.tile, downNodeCenterX, downNodeCenterX, 0, downNodeCenterY, 10);
         AddTilesInRange(parent_Down.tile, lowerX, upperX, 0, 0, 9);
-    }
+    }*/
 }

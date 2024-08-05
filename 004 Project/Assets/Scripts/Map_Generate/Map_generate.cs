@@ -169,22 +169,25 @@ public class Map_generate : MonoBehaviour
         {
             for (int j = 0; j < 4; j++)
             {
-                int rand = UnityEngine.Random.Range(0, 4);
-                if (map_list[0, j].way == 9)
+                
+                if (map_list[i, j].way == 9)
                 {
-                    map_list[0, j].map_type = Map_Node.Map_type.Enterance;
+                    map_list[i, j].map_type = Map_Node.Map_type.Enterance;
                     // player.transform.position= new Vector3(map_list[0, j].nodeRect.x,map_list[0, j].nodeRect.y,1);
                 }
                 
-                else if (map_list[3, j].way == 2){
-                    map_list[3, j].map_type = Map_Node.Map_type.Exit;
-                    map_list[3,j].way = 8;
+                else if ( i == 3 && map_list[i, j].way == 2){
+                    map_list[i, j].map_type = Map_Node.Map_type.Exit;
+                    map_list[i,j].way = 8;
                 }
                 else
                 {
-                    map_list[i, j].map_type = (Map_Node.Map_type)rand;
-                }
+                    int rand = UnityEngine.Random.Range(0, 10);
+                    if (rand == 0) map_list[i, j].map_type = Map_Node.Map_type.Treasure;
+                    else map_list[i, j].map_type = Map_Node.Map_type.Enemy;
 
+                }
+                Debug.Log(i + " " + j + " " + map_list[i, j].map_type);
             }
         }
     }
@@ -205,9 +208,9 @@ public class Map_generate : MonoBehaviour
         {
             for (int j = 0; j < max; j++)
             {
-                Tile_Map_Create.instance.MakeRoad(map_list[i,j],map_list[i,j].node.leftNode,map_list[i,j].node.rightNode);
+                /*Tile_Map_Create.instance.MakeRoad(map_list[i,j],map_list[i,j].node.leftNode,map_list[i,j].node.rightNode);   길연결 부분 수정해야함
                 if(map_list[i,j].Right_node != null) Tile_Map_Create.instance.Horiontal_add(map_list[i,j],map_list[i,j].Right_node,map_list[i,j].Tile_Right,map_list[i,j].Right_node.Tile_left);
-                if(map_list[i,j].Down_node != null) Tile_Map_Create.instance.Vertical_add(map_list[i,j],map_list[i,j].Down_node,map_list[i,j].Tile_Down,map_list[i,j].Down_node.Tile_Up);
+                if(map_list[i,j].Down_node != null) Tile_Map_Create.instance.Vertical_add(map_list[i,j],map_list[i,j].Down_node,map_list[i,j].Tile_Down,map_list[i,j].Down_node.Tile_Up);*/
             }
         }
         Tile_generate();
