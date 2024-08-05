@@ -17,9 +17,6 @@ public class Tile_Map_Create : MonoBehaviour
                     Corner,
                     Pillar;
     public TileBase road;
-    // public int[,] horizontal_arr = new int[40,20];
-    // public int[,] vertical_arr = new int[20,40];
-
     public int horizontal = 80, vertical = 80; //변경
 
     [SerializeField] float minimumDevideRate = 0.4f; //공간이 나눠지는 최소 비율
@@ -193,7 +190,12 @@ public class Tile_Map_Create : MonoBehaviour
                 }
                 else if(j==y) parent.tile[i,j]=5;
                 else if(j == y+height-1) parent.tile[i,j]=8;
+<<<<<<< HEAD
                 else parent.tile[i, j] = 10;
+=======
+                else
+                    parent.tile[i, j] = 10;
+>>>>>>> ccf4d9f4840e96f14fa5bf83db39ed57291ff036
             }
         }
     }
@@ -349,8 +351,13 @@ public class Tile_Map_Create : MonoBehaviour
         int upperY = Mathf.Max(leftNodeCenterY, rightNodeCenterY);
         int lowerY = Mathf.Min(leftNodeCenterY, rightNodeCenterY);
 
+<<<<<<< HEAD
         AddTilesInRange(parent_Left.tile, leftNodeCenterX, horizontal - 1, leftNodeCenterY, leftNodeCenterY, 10);
         AddTilesInRange(parent_Rigt.tile, 0, rightNodeCenterX, rightNodeCenterY, rightNodeCenterY, 10);
+=======
+        AddTilesInRange(parent_Left.tile, leftNodeCenterX, horizontal - 1, leftNodeCenterY, leftNodeCenterY, 9);
+        AddTilesInRange(parent_Rigt.tile, 0, rightNodeCenterX, rightNodeCenterY, rightNodeCenterY, 9);
+>>>>>>> ccf4d9f4840e96f14fa5bf83db39ed57291ff036
         AddTilesInRange(parent_Left.tile, horizontal - 1, horizontal - 1, lowerY, upperY, 10);
     }
 
@@ -365,6 +372,11 @@ public class Tile_Map_Create : MonoBehaviour
 
         AddTilesInRange(parent_Up.tile, upNodeCenterX, upNodeCenterX, upNodeCenterY, vertical - 1, 10);
         AddTilesInRange(parent_Down.tile, downNodeCenterX, downNodeCenterX, 0, downNodeCenterY, 10);
+<<<<<<< HEAD
         AddTilesInRange(parent_Down.tile, lowerX, upperX, 0, 0, 9);
     }*/
+=======
+        AddTilesInRange(parent_Down.tile, lowerX, upperX, 0, 0, 10);
+    }
+>>>>>>> ccf4d9f4840e96f14fa5bf83db39ed57291ff036
 }

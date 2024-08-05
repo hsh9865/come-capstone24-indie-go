@@ -173,21 +173,38 @@ public class Map_generate : MonoBehaviour
                 if (map_list[i, j].way == 9)
                 {
                     map_list[i, j].map_type = Map_Node.Map_type.Enterance;
+<<<<<<< HEAD
                     // player.transform.position= new Vector3(map_list[0, j].nodeRect.x,map_list[0, j].nodeRect.y,1);
                 }
                 
                 else if ( i == 3 && map_list[i, j].way == 2){
                     map_list[i, j].map_type = Map_Node.Map_type.Exit;
                     map_list[i,j].way = 8;
+=======
+                    
+                    // player.transform.position= new Vector3(map_list[0, j].nodeRect.x,map_list[0, j].nodeRect.y,1);
+                }
+                else if (i == 3 && map_list[i, j].way == 2){
+                    map_list[i, j].map_type = Map_Node.Map_type.Exit;
+                    map_list[i,j].way = 8;
+                    
+>>>>>>> ccf4d9f4840e96f14fa5bf83db39ed57291ff036
                 }
                 else
                 {
                     int rand = UnityEngine.Random.Range(0, 10);
+<<<<<<< HEAD
                     if (rand == 0) map_list[i, j].map_type = Map_Node.Map_type.Treasure;
                     else map_list[i, j].map_type = Map_Node.Map_type.Enemy;
 
                 }
                 Debug.Log(i + " " + j + " " + map_list[i, j].map_type);
+=======
+                    if (rand == 0 ) map_list[i, j].map_type = Map_Node.Map_type.Treasure;
+                    else map_list[i,j].map_type = Map_Node.Map_type.Enemy;   
+                }
+                Debug.Log(map_list[i,j].map_type);
+>>>>>>> ccf4d9f4840e96f14fa5bf83db39ed57291ff036
             }
         }
     }
