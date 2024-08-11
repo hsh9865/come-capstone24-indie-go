@@ -10,7 +10,7 @@ public class Map_generate : MonoBehaviour
     public static Map_generate instance;
     public const int max = 4;
     public Map_Node[,] map_list = new Map_Node[max, max];
-    
+
     int way,
         next_num;
     void Awake()
@@ -27,7 +27,7 @@ public class Map_generate : MonoBehaviour
     }
     void Start()
     {
-        
+
         for (int i = 0; i < max; i++)
         {
             for (int j = 0; j < max; j++)
@@ -139,25 +139,25 @@ public class Map_generate : MonoBehaviour
     }
     void SetNode() // node를 할당해서 추후 맵생성에 있어서 원할하게할 목적
     {
-        for(int i =0;i<4;i++)
+        for (int i = 0; i < 4; i++)
         {
-            for(int j = 0;j<4;j++)
+            for (int j = 0; j < 4; j++)
             {
-                if(map_list[i,j].way ==0) continue;
+                if (map_list[i, j].way == 0) continue;
                 else
                 {
-                    if(map_list[i,j].way ==2)
+                    if (map_list[i, j].way == 2)
                     {
-                        if(i+1 ==4) continue;
-                        map_list[i,j].Down_node = map_list[i+1,j];
-                        map_list[i+1,j].Up_node = map_list[i,j];
+                        if (i + 1 == 4) continue;
+                        map_list[i, j].Down_node = map_list[i + 1, j];
+                        map_list[i + 1, j].Up_node = map_list[i, j];
                     }
-                    
-                    if( j+1 == 4) continue;
-                    if(map_list[i,j+1].way != 0)
+
+                    if (j + 1 == 4) continue;
+                    if (map_list[i, j + 1].way != 0)
                     {
-                        map_list[i,j].Right_node = map_list[i,j+1];
-                        map_list[i,j+1].Left_node = map_list[i,j];
+                        map_list[i, j].Right_node = map_list[i, j + 1];
+                        map_list[i, j + 1].Left_node = map_list[i, j];
                     }
                 }
             }
@@ -169,42 +169,40 @@ public class Map_generate : MonoBehaviour
         {
             for (int j = 0; j < 4; j++)
             {
-                
+
                 if (map_list[i, j].way == 9)
                 {
                     map_list[i, j].map_type = Map_Node.Map_type.Enterance;
-<<<<<<< HEAD
+
+
                     // player.transform.position= new Vector3(map_list[0, j].nodeRect.x,map_list[0, j].nodeRect.y,1);
                 }
-                
-                else if ( i == 3 && map_list[i, j].way == 2){
+
+                else if (i == 3 && map_list[i, j].way == 2)
+                {
                     map_list[i, j].map_type = Map_Node.Map_type.Exit;
-                    map_list[i,j].way = 8;
-=======
-                    
+                    map_list[i, j].way = 8;
+
+
                     // player.transform.position= new Vector3(map_list[0, j].nodeRect.x,map_list[0, j].nodeRect.y,1);
                 }
-                else if (i == 3 && map_list[i, j].way == 2){
+                else if (i == 3 && map_list[i, j].way == 2)
+                {
                     map_list[i, j].map_type = Map_Node.Map_type.Exit;
-                    map_list[i,j].way = 8;
-                    
->>>>>>> ccf4d9f4840e96f14fa5bf83db39ed57291ff036
+                    map_list[i, j].way = 8;
+
+
                 }
                 else
                 {
                     int rand = UnityEngine.Random.Range(0, 10);
-<<<<<<< HEAD
+
                     if (rand == 0) map_list[i, j].map_type = Map_Node.Map_type.Treasure;
                     else map_list[i, j].map_type = Map_Node.Map_type.Enemy;
 
                 }
                 Debug.Log(i + " " + j + " " + map_list[i, j].map_type);
-=======
-                    if (rand == 0 ) map_list[i, j].map_type = Map_Node.Map_type.Treasure;
-                    else map_list[i,j].map_type = Map_Node.Map_type.Enemy;   
-                }
-                Debug.Log(map_list[i,j].map_type);
->>>>>>> ccf4d9f4840e96f14fa5bf83db39ed57291ff036
+                Debug.Log(map_list[i, j].map_type);
             }
         }
     }
@@ -214,7 +212,7 @@ public class Map_generate : MonoBehaviour
         {
             for (int j = 0; j < max; j++)
             {
-                Tile_Map_Create.instance.Tile_Node(map_list[i,j]);
+                Tile_Map_Create.instance.Tile_Node(map_list[i, j]);
             }
         }
         Set_Load();
@@ -234,12 +232,13 @@ public class Map_generate : MonoBehaviour
     }
     void Tile_generate()
     {
-        for(int i = 0;i< max;i++)
+        for (int i = 0; i < max; i++)
         {
-            for(int j = 0 ; j < max; j++)
+            for (int j = 0; j < max; j++)
             {
-                Tile_Map_Create.instance.Make_Tile(map_list[i,j]);
+                Tile_Map_Create.instance.Make_Tile(map_list[i, j]);
             }
         }
     }
+    
 }

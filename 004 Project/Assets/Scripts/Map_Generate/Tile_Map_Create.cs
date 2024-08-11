@@ -190,12 +190,8 @@ public class Tile_Map_Create : MonoBehaviour
                 }
                 else if(j==y) parent.tile[i,j]=5;
                 else if(j == y+height-1) parent.tile[i,j]=8;
-<<<<<<< HEAD
                 else parent.tile[i, j] = 10;
-=======
-                else
-                    parent.tile[i, j] = 10;
->>>>>>> ccf4d9f4840e96f14fa5bf83db39ed57291ff036
+
             }
         }
     }
@@ -375,8 +371,6 @@ public class Tile_Map_Create : MonoBehaviour
 <<<<<<< HEAD
         AddTilesInRange(parent_Down.tile, lowerX, upperX, 0, 0, 9);
     }*/
-=======
-        AddTilesInRange(parent_Down.tile, lowerX, upperX, 0, 0, 10);
-    }
->>>>>>> ccf4d9f4840e96f14fa5bf83db39ed57291ff036
+    
+
 }
