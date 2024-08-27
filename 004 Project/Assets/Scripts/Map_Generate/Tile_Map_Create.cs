@@ -15,7 +15,8 @@ public class Tile_Map_Create : MonoBehaviour
     public TileBase Floor,
                     Side,
                     Corner,
-                    Pillar;
+                    Pillar,
+                    Ground;
     public TileBase road;
     public int horizontal = 80, vertical = 80; //변경
 
@@ -49,9 +50,9 @@ public class Tile_Map_Create : MonoBehaviour
 
         root.node = new TileNode(0, 0);
         Divide_Tile(root, root.node, 0);
-        /*ConnectRooms(root, root.node.leftNode);   길연결 부분 수정해야함
-        ConnectRooms(root, root.node.rightNode);*/
-        // Make_Tile(root);
+        ConnectRooms(root, root.node.leftNode);   
+        ConnectRooms(root, root.node.rightNode);
+        //Make_Tile(root);
     }
 
     public void Divide_Tile(Map_Node parent, TileNode root, int n)
@@ -139,6 +140,9 @@ public class Tile_Map_Create : MonoBehaviour
                     case 9:
                         tile = road;
                         break;
+                    case 10:
+                        tile = Ground;
+                        break;
                     default:
                         break;
                 }
@@ -190,7 +194,7 @@ public class Tile_Map_Create : MonoBehaviour
                 }
                 else if(j==y) parent.tile[i,j]=5;
                 else if(j == y+height-1) parent.tile[i,j]=8;
-                else parent.tile[i, j] = 10;
+                else parent.tile[i, j] = 11;
 
             }
         }
@@ -201,14 +205,15 @@ public class Tile_Map_Create : MonoBehaviour
         int rand = UnityEngine.Random.Range(width / 4, width / 2);
         int altitude = UnityEngine.Random.Range(height / 4  , height / 2);
         int altitude2 = UnityEngine.Random.Range(height / 4, height / 2);
-        for (int i = x+3; i < x+rand+3;i++)
+        for (int i = x; i < x+rand;i++)
         {
-            parent.tile[i, y+ altitude] = 0;
-            parent.tile[i+startPoint, y + altitude + altitude2] = 0;
+            parent.tile[i+3, y+ altitude] = 10;
+            parent.tile[i+startPoint, y + altitude + altitude2] = 10;
         }
     }
 
-/*    private void ConnectRooms(Map_Node parent, TileNode root)  길연결 부분 수정해야함
+
+    private void ConnectRooms(Map_Node parent, TileNode root) 
     {
         if (root.leftNode == null || root.rightNode == null)
         {
@@ -226,39 +231,40 @@ public class Tile_Map_Create : MonoBehaviour
         int rightCenterX = right.x + right.width / 2;
         int rightCenterY = right.y + right.height / 2;
 
-        if (leftCenterX < rightCenterX)
-        {
-            for (int i = leftCenterX; i <= rightCenterX; i++)
-            {
-                // if (parent.tile[i,leftCenterY]==0)
-                    parent.tile[i, leftCenterY] = 9;
-            }
-        }
-        else
-        {
-            for (int i = rightCenterX; i <= leftCenterX; i++)
-            {
-                // if (parent.tile[i,rightCenterY]==0)
-                    parent.tile[i, rightCenterY] = 9;
-            }
-        }
-
         if (leftCenterY < rightCenterY)
         {
             for (int j = leftCenterY; j <= rightCenterY; j++)
             {
-                // if (parent.tile[rightCenterX,j]==0)
-                    parent.tile[rightCenterX, j] = 10;
+                if (parent.tile[rightCenterX, j] != 10)
+                    parent.tile[rightCenterX, j] = 11;
             }
         }
         else
         {
             for (int j = rightCenterY; j <= leftCenterY; j++)
             {
-                // if (parent.tile[leftCenterX, j]==0)
-                    parent.tile[leftCenterX, j] = 10;
+                if (parent.tile[leftCenterX, j] != 10)
+                    parent.tile[leftCenterX, j] = 11;
             }
         }
+        if (leftCenterX < rightCenterX)
+        {
+            for (int i = leftCenterX; i <= rightCenterX; i++)
+            {
+                if (parent.tile[i,leftCenterY]!=10)
+                    parent.tile[i, leftCenterY] = 11;
+            }
+        }
+        else
+        {
+            for (int i = rightCenterX; i <= leftCenterX; i++)
+            {
+                if (parent.tile[i, rightCenterY] != 10)
+                    parent.tile[i, rightCenterY] = 11;
+            }
+        }
+
+        
     }
 
 
@@ -266,7 +272,7 @@ public class Tile_Map_Create : MonoBehaviour
     {
         int a = Random.Range(0,4);
         int leftCenterX, leftCenterY, rightCenterX, rightCenterY;
-        
+
         switch(a)
         {
             case 0:
@@ -292,37 +298,23 @@ public class Tile_Map_Create : MonoBehaviour
         leftCenterY = left.y + left.height / 2;
         rightCenterX = right.x + right.width / 2;
         rightCenterY = right.y + right.height / 2;
-        if (leftCenterX < rightCenterX)
+        for (int i = leftCenterX; i <= rightCenterX; i++)
         {
-            for (int i = leftCenterX; i <= rightCenterX; i++)
-            {
-                // if(parent.tile[i, leftCenterY] ==0) 
-                    parent.tile[i, leftCenterY] = 10;
-            }
-        }
-        else
-        {
-            for (int i = rightCenterX; i <= leftCenterX; i++)
-            {
-                // if(parent.tile[i, rightCenterY] ==0)
-                    parent.tile[i, rightCenterY] = 10;
-            }
+            if (parent.tile[i, leftCenterY] != 10) parent.tile[i, leftCenterY] = 11;
         }
 
         if (leftCenterY < rightCenterY)
         {
             for (int j = leftCenterY; j <= rightCenterY; j++)
             {
-                // if(parent.tile[rightCenterX, j] ==0)
-                    parent.tile[rightCenterX, j] = 10;
+                if(parent.tile[rightCenterX, j] ==0) parent.tile[rightCenterX, j] = 11;
             }
         }
         else
         {
             for (int j = rightCenterY; j <= leftCenterY; j++)
             {
-                // if(parent.tile[leftCenterX, j] ==0)
-                    parent.tile[leftCenterX, j] = 10;
+                if(parent.tile[leftCenterX, j] ==0) parent.tile[leftCenterX, j] = 11;
             }
         }
 
@@ -333,44 +325,100 @@ public class Tile_Map_Create : MonoBehaviour
         {
             for (int j = startY; j <= endY; j++)
             {
-                tileArray[i, j] = value;
+                if(tileArray[i, j] != 10 )   tileArray[i, j] = value;
             }
         }
     }
-
-    public void Horiontal_add(Map_Node parent_Left, Map_Node parent_Rigt, TileNode Child_Left, TileNode Child_Right)
+    public void Horiontal_add(Map_Node parent_Left, Map_Node parent_Right,TileNode left, TileNode right)
     {
-        int leftNodeCenterX = Child_Left.x + Child_Left.width / 2;
-        int leftNodeCenterY = Child_Left.y + Child_Left.height / 2;
-        int rightNodeCenterX = Child_Right.x + Child_Right.width / 2;
-        int rightNodeCenterY = Child_Right.y + Child_Right.height / 2;
-        int upperY = Mathf.Max(leftNodeCenterY, rightNodeCenterY);
-        int lowerY = Mathf.Min(leftNodeCenterY, rightNodeCenterY);
+        int a = Random.Range(0, 4);
+        int leftCenterX, leftCenterY, rightCenterX, rightCenterY;
 
-<<<<<<< HEAD
-        AddTilesInRange(parent_Left.tile, leftNodeCenterX, horizontal - 1, leftNodeCenterY, leftNodeCenterY, 10);
-        AddTilesInRange(parent_Rigt.tile, 0, rightNodeCenterX, rightNodeCenterY, rightNodeCenterY, 10);
-=======
-        AddTilesInRange(parent_Left.tile, leftNodeCenterX, horizontal - 1, leftNodeCenterY, leftNodeCenterY, 9);
-        AddTilesInRange(parent_Rigt.tile, 0, rightNodeCenterX, rightNodeCenterY, rightNodeCenterY, 9);
->>>>>>> ccf4d9f4840e96f14fa5bf83db39ed57291ff036
-        AddTilesInRange(parent_Left.tile, horizontal - 1, horizontal - 1, lowerY, upperY, 10);
+        switch (a)
+        {
+            case 0:
+                left = left.leftNode;
+                right = right.leftNode;
+                break;
+            case 1:
+                left = left.leftNode;
+                right = right.rightNode;
+                break;
+            case 2:
+                left = left.rightNode;
+                right = right.leftNode;
+                break;
+            case 3:
+                left = left.rightNode;
+                right = right.rightNode;
+                break;
+            default:
+                return;
+        }
+        leftCenterX = left.x + left.width / 2;
+        leftCenterY = left.y + left.height / 2;
+        rightCenterX = right.x + right.width / 2;
+        rightCenterY = right.y + right.height / 2;
+        for(int x = leftCenterX;x<80;x++)
+        {
+            if(parent_Left.tile[x, leftCenterY] != 10) parent_Left.tile[x, leftCenterY] = 11;
+        }
+        if (leftCenterY > rightCenterY)
+        {
+            for (int y = rightCenterY; y <= leftCenterY; y++)
+                parent_Left.tile[79, y] = 11;
+        }
+        else
+        {
+            for (int y = leftCenterY; y <= rightCenterY; y++)
+                parent_Left.tile[79, y] = 11;
+        }
+        for(int x =0; x<rightCenterX;x++)
+            if(parent_Right.tile[x, rightCenterY] != 10)parent_Right.tile[x, rightCenterY] = 11;      
     }
 
-    public void Vertical_add(Map_Node parent_Up, Map_Node parent_Down, TileNode Child_Up, TileNode Child_Down)
+    public void Vertical_add(Map_Node parent_Up, Map_Node parent_Down, TileNode up, TileNode down)
     {
-        int upNodeCenterX = Child_Up.x + Child_Up.width / 2;
-        int upNodeCenterY = Child_Up.y + Child_Up.height / 2;
-        int downNodeCenterX = Child_Down.x + Child_Down.width / 2;
-        int downNodeCenterY = Child_Down.y + Child_Down.height / 2;
-        int upperX = Mathf.Max(upNodeCenterX, downNodeCenterX);
-        int lowerX = Mathf.Min(upNodeCenterX, downNodeCenterX);
-
-        AddTilesInRange(parent_Up.tile, upNodeCenterX, upNodeCenterX, upNodeCenterY, vertical - 1, 10);
-        AddTilesInRange(parent_Down.tile, downNodeCenterX, downNodeCenterX, 0, downNodeCenterY, 10);
-<<<<<<< HEAD
-        AddTilesInRange(parent_Down.tile, lowerX, upperX, 0, 0, 9);
-    }*/
-    
-
+        int a = Random.Range(0, 4);
+        int UpCenterX, UpCenterY, DownCenterX, DownCenterY;
+        switch(a)
+        {
+            case 0:
+                up = up.leftNode.rightNode;
+                down = down.leftNode.leftNode;
+                break;
+            case 1:
+                up = up.leftNode.rightNode;
+                down = down.rightNode.leftNode;
+                break;
+            case 2:
+                up = up.rightNode.rightNode;
+                down = down.leftNode.leftNode;
+                break;
+            case 3:
+                up = up.rightNode.rightNode;
+                down = down.rightNode.leftNode;
+                break;
+            default:
+                return;
+        }
+        UpCenterX = up.x + up.width / 2;
+        UpCenterY = up.y + up.height / 2;
+        DownCenterX = down.x + down.width / 2;
+        DownCenterY = down.y + down.height / 2;
+        for(int y = UpCenterY; y< 80;y++)
+            if (parent_Up.tile[UpCenterX, y] != 10) parent_Up.tile[UpCenterX, y] = 11;
+        if(UpCenterX < DownCenterX)
+        {
+            for (int x = UpCenterX; x < DownCenterX; x++)
+                parent_Up.tile[x, 79] = 11;
+        }
+        else
+        {
+            for (int x = DownCenterX; x < UpCenterX; x++)
+                parent_Up.tile[x, 79] = 11;
+        }
+        for(int y = 0;y<DownCenterY;y++)
+            if (parent_Down.tile[DownCenterX, y] != 10) parent_Down.tile[DownCenterX, y] = 11;
+    }
 }

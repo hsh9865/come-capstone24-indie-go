@@ -201,8 +201,8 @@ public class Map_generate : MonoBehaviour
                     else map_list[i, j].map_type = Map_Node.Map_type.Enemy;
 
                 }
-                Debug.Log(i + " " + j + " " + map_list[i, j].map_type);
-                Debug.Log(map_list[i, j].map_type);
+                /*Debug.Log(i + " " + j + " " + map_list[i, j].map_type);
+                Debug.Log(map_list[i, j].map_type);*/
             }
         }
     }
@@ -223,9 +223,9 @@ public class Map_generate : MonoBehaviour
         {
             for (int j = 0; j < max; j++)
             {
-                /*Tile_Map_Create.instance.MakeRoad(map_list[i,j],map_list[i,j].node.leftNode,map_list[i,j].node.rightNode);   길연결 부분 수정해야함
-                if(map_list[i,j].Right_node != null) Tile_Map_Create.instance.Horiontal_add(map_list[i,j],map_list[i,j].Right_node,map_list[i,j].Tile_Right,map_list[i,j].Right_node.Tile_left);
-                if(map_list[i,j].Down_node != null) Tile_Map_Create.instance.Vertical_add(map_list[i,j],map_list[i,j].Down_node,map_list[i,j].Tile_Down,map_list[i,j].Down_node.Tile_Up);*/
+                Tile_Map_Create.instance.MakeRoad(map_list[i,j],map_list[i,j].node.leftNode,map_list[i,j].node.rightNode);
+                if (map_list[i, j].Right_node != null) Tile_Map_Create.instance.Horiontal_add(map_list[i, j], map_list[i, j].Right_node, map_list[i, j].node.rightNode, map_list[i, j + 1].node.leftNode);
+                if(map_list[i,j].Down_node != null) Tile_Map_Create.instance.Vertical_add(map_list[i,j],map_list[i,j].Down_node,map_list[i,j].node,map_list[i,j].Down_node.node);
             }
         }
         Tile_generate();
