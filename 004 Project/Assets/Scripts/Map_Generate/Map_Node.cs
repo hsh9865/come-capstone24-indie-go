@@ -6,10 +6,8 @@ public class Map_Node
 {
     public enum Map_type
     {
-        Empty=0,
-        Enemy=1,
-        Enviroment=2,
-        Treasure=3,
+        Enemy,
+        Treasure,
         Enterance,
         Exit
     }
@@ -18,7 +16,7 @@ public class Map_Node
     public Map_Node Right_node;
     public Map_Node Down_node;
     
-    public int[,] tile = new int[20,20];
+    public int[,] tile = new int[Tile_Map_Create.instance.horizontal,Tile_Map_Create.instance.vertical];
     public TileNode node;
     public TileNode Tile_left;
     public TileNode Tile_Right;
