@@ -143,6 +143,9 @@ public class Tile_Map_Create : MonoBehaviour
                     case 10:
                         tile = Ground;
                         break;
+                    case 99:
+                        tile = Pillar;
+                        break;
                     default:
                         break;
                 }
@@ -172,7 +175,7 @@ public class Tile_Map_Create : MonoBehaviour
         tree.width = width;
         tree.height = height;
         FillRoom(parent, tree.x, tree.y, tree.width, tree.height);
-        ChangeRoom(parent, tree.x, tree.y, tree.width, tree.height);
+        ChangeRoom(parent, tree.x, tree.y, tree.width, tree.height,PlayerDataAnalyze.instance.playerType);
     }
     private void FillRoom(Map_Node parent, int x, int y, int width, int height)
     { //room의 rect정보를 받아서 tile을 set해주는 함수
@@ -199,17 +202,26 @@ public class Tile_Map_Create : MonoBehaviour
             }
         }
     }
-    private void ChangeRoom(Map_Node parent, int x, int y, int width, int height)
+    private void ChangeRoom(Map_Node parent, int x, int y, int width, int height , string playStyle)
     {
         int startPoint = UnityEngine.Random.Range(width / 4, width / 2);
         int rand = UnityEngine.Random.Range(width / 4, width / 2);
         int altitude = UnityEngine.Random.Range(height / 4  , height / 2);
         int altitude2 = UnityEngine.Random.Range(height / 4, height / 2);
         for (int i = x; i < x+rand;i++)
-        {
+        {                     
             parent.tile[i+3, y+ altitude] = 10;
             parent.tile[i+startPoint, y + altitude + altitude2] = 10;
         }
+        if (playStyle == "High_dash")
+        {
+            Debug.Log("Check");
+            int WallPoint1 = UnityEngine.Random.Range(1, startPoint - 2);
+            int WallPoint2 = UnityEngine.Random.Range(1, startPoint - 2);
+            parent.tile[x + 3 + WallPoint1, y + altitude - 1] = 99;
+            parent.tile[x + startPoint + WallPoint2, y + altitude + altitude2- 1] = 99;
+        }
+            
     }
 
 
@@ -266,7 +278,10 @@ public class Tile_Map_Create : MonoBehaviour
 
         
     }
+    public void Wall_Customize(Map_Node parent,string playStyle)
+    {
 
+    }
 
     public void MakeRoad(Map_Node parent, TileNode left,TileNode right)
     {

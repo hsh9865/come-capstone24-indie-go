@@ -6,8 +6,10 @@ public class PlayerDataAnalyze : MonoBehaviour
 {
     public static PlayerDataAnalyze instance;
     public PlayerDataCollect pdc;
+    public string playerType;
     private void Awake()
     {
+        playerType = "High_dash";
         if (instance == null)
         {
             instance = this;
@@ -37,12 +39,12 @@ public class PlayerDataAnalyze : MonoBehaviour
     public void AnalyzePlayerData(Dictionary<string, int> actionData)
     {
         // 총 액션 수 계산
-        int totalActions = actionData["ParrySuccess"] + actionData["DashSuccess"] + actionData["DefenceSuccess"];
+        int totalActions = actionData["ParryAttempt"] + actionData["DashAttempt"] + actionData["DefenceAttempt"];
 
         // 로지스틱 함수 적용
-        float parryRatio = LogisticFunction((float)actionData["ParrySuccess"] / totalActions);
-        float dashRatio = LogisticFunction((float)actionData["DashSuccess"] / totalActions);
-        float runRatio = LogisticFunction((float)actionData["DefenceSuccess"] / totalActions);
+        float parryRatio = LogisticFunction((float)actionData["ParryAttempt"] / totalActions);
+        float dashRatio = LogisticFunction((float)actionData["DashAttempt"] / totalActions);
+        float runRatio = LogisticFunction((float)actionData["DefenceAttempt"] / totalActions);
 
         // 비율 정규화
         float ratioSum = parryRatio + dashRatio + runRatio;
@@ -73,7 +75,7 @@ public class PlayerDataAnalyze : MonoBehaviour
             { "run", runRatio }
         };
 
-        string playerType = "";
+        
         float maxRatio = -1;
 
         foreach (var entry in ratios)

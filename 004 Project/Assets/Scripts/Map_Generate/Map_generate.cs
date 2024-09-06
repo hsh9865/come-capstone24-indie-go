@@ -223,6 +223,7 @@ public class Map_generate : MonoBehaviour
         {
             for (int j = 0; j < max; j++)
             {
+
                 Tile_Map_Create.instance.MakeRoad(map_list[i,j],map_list[i,j].node.leftNode,map_list[i,j].node.rightNode);
                 if (map_list[i, j].Right_node != null) Tile_Map_Create.instance.Horiontal_add(map_list[i, j], map_list[i, j].Right_node, map_list[i, j].node.rightNode, map_list[i, j + 1].node.leftNode);
                 if(map_list[i,j].Down_node != null) Tile_Map_Create.instance.Vertical_add(map_list[i,j],map_list[i,j].Down_node,map_list[i,j].node,map_list[i,j].Down_node.node);
