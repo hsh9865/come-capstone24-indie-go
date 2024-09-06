@@ -23,7 +23,7 @@ public class PlayerDataCollect
         if (actionData.ContainsKey(actionType))
         {
             actionData[actionType]++;
-            Debug.Log($"{actionType} count : {actionData[actionType]}");
+          //  Debug.Log($"{actionType} count : {actionData[actionType]}");
         }
     }
 
